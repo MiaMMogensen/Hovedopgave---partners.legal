@@ -1,9 +1,19 @@
+@font-face {
+  font-family: "SpoofBold";
+  src: url("/fonts/Spoof-Bold.otf") format("opentype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --white: #ffffff;
+  --black: #000000;
   --darkblue: #032478;
   --purple: #7284fa;
   --lightblue: #b6d5ef;
   --lightpurple: #b7c1fc;
+  --font-spoof: "SpoofBold", Arial, sans-serif;
 }
 
 html,

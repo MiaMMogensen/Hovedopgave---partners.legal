@@ -5,69 +5,61 @@ import styles from "./Footer.module.css";
 export default function Footer() {
   return (
     <footer className={styles.footer}>
-      <nav className={styles.footerLeft} aria-label="Footer menu">
-        <p>Menu</p>
-        <Link href="/coaching">Coachingforløb</Link>
-        <Link href="/opskrifter">Opskrifter</Link>
-        <Link href="/tips">Tips og råd</Link>
-        <Link href="/anmeldelser">Anmeldelser</Link>
-        <Link href="/booking">Booking</Link>
-      </nav>
-
-      <div className={styles.footerMiddle}>
-        <Link href="/" aria-label="Til forsiden Mark Andersen Coaching">
+      <div className={styles.inner}>
+        <div style={{ position: "relative" }}>
+          <div className={styles.blobTop}></div>
           <Image
-            src="/img/logo-hvid.png"
-            alt="Mark Andersen Coaching"
-            width={300}
-            height={100}
-            className={styles.logo}
+            src="/img/logo.svg"
+            alt=".legal partners logo"
+            width={200}
+            height={60}
+            loading="eager"
           />
-        </Link>
+        </div>
 
-        <div className={styles.footerSocials} aria-label="Sociale medier">
-          <Link
-            href="https://www.facebook.com/profile.php?id=100063817801945"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Åbn Mark Andersen Coaching på Facebook i en ny fane"
-          >
-            <Image
-              src="/img/facebook.png"
-              alt=""
-              aria-hidden="true"
-              width={45}
-              height={45}
-              className={styles.socialIcon}
-            />
-          </Link>
+        <div className={styles.col}>
+          <h4 className={styles.colTitle}>Info</h4>
+          <p>.legal A/S</p>
+          <p>hello@dotlegal.com</p>
+          <p>+45 7027 0127</p>
+          <p>CVR: 40888888</p>
+        </div>
 
-          <Link
-            href="https://www.instagram.com/markandersenn/"
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Åbn Mark Andersen Coaching på Instagram i en ny fane"
-          >
-            <Image
-              src="/img/instagram.png"
-              alt=""
-              aria-hidden="true"
-              width={45}
-              height={45}
-              className={styles.socialIcon}
-            />
-          </Link>
+        <div className={styles.col}>
+          <h4 className={styles.colTitle}>Kontor</h4>
+          <p>Aarhus</p>
+          <p>
+            Store Torv 14, 2. sal
+            <br />
+            8000 Aarhus C
+          </p>
+        </div>
+
+        <div className={styles.col} style={{ position: "relative" }}>
+          <div className={styles.blobBottom}></div>
+          <h4 className={styles.colTitle}>For Kunder</h4>
+          <Link href="/find-partner">Find en partner</Link>
+        </div>
+
+        <div className={styles.col}>
+          <h4 className={styles.colTitle}>For Partnere</h4>
+          <Link href="/bliv-partner">Bliv partner</Link>
+          <Link href="/bliv-partner#fordele">Partnerfordele</Link>
+          <Link href="/login">Partnerportal</Link>
         </div>
       </div>
 
-      <div className={styles.footerRight}>
-        <div className={styles.contacts}>
-          <p className={styles.contactsTitle}>Kontaktoplysninger</p>
-          <p>Markandersencoaching@gmail.com</p>
-          <p>30 89 30 49</p>
-        </div>
-        <div>
-          <p>© 2025 Mark Andersen Coaching</p>
+      <div className={styles.bottom}>
+        <p>
+          .legal er ikke en advokatvirksomhed og er derfor ikke under tilsyn af
+          Advokatrådet.
+        </p>
+        <div className={styles.bottomLinks}>
+          <Link href="#">Terms</Link>
+          <Link href="#">Security</Link>
+          <Link href="#">Privacy policy</Link>
+          <Link href="#">Cookie policy</Link>
+          <Link href="#">Help center</Link>
         </div>
       </div>
     </footer>
