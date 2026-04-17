@@ -1,6 +1,18 @@
 import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { Poppins, Caveat } from "next/font/google";
+
+const poppins = Poppins({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-poppins",
+});
+
+const caveat = Caveat({
+  subsets: ["latin"],
+  variable: "--font-caveat",
+});
 
 export const metadata = {
   title: "Partners.legal",
@@ -10,10 +22,10 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="da" className={`${poppins.variable} ${caveat.variable}`}>
       <body>
         <Header />
-        {children}
+        <main style={{ marginTop: "74px" }}>{children}</main>
         <Footer />
       </body>
     </html>
