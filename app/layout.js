@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
     <html lang="da" className={`${poppins.variable} ${caveat.variable}`}>
       <body>
         <Header />
-        <main style={{ marginTop: "74px" }}>{children}</main>
+        <main style={{ marginTop: "90px" }}>{children}</main>
         <Footer />
       </body>
     </html>
