@@ -1,0 +1,280 @@
+/* hero */
+.hero {
+  background: linear-gradient(180deg, #d4e7f6 0%, #ffffff 100%);
+  padding: 130px 200px;
+  position: relative;
+  text-align: center;
+}
+
+.heroInner {
+  max-width: 1400px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.catLabel {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--purple);
+  margin-bottom: 12px;
+  margin-top: 20px;
+}
+
+.heroTitle {
+  font-family: var(--font-spoof, sans-serif);
+  font-size: 50px;
+  color: var(--darkblue);
+  margin-bottom: 80px;
+  margin-top: 0;
+}
+
+.heroDesc {
+  font-size: 18px;
+  color: var(--darkblue);
+  margin-bottom: 80px;
+}
+
+.heroCta {
+  display: inline-block;
+  background: var(--darkblue);
+  color: var(--white);
+  padding: 14px 32px;
+  border-radius: 100px;
+  font-size: 18px;
+  text-decoration: none;
+  margin-bottom: 60px;
+  transition: background 0.2s;
+}
+
+.heroCta:hover {
+  background: #b7c1fc;
+  color: #032478;
+}
+
+/* Statistikker */
+.statsGrid {
+  display: flex;
+  gap: 300px;
+  padding-top: 80px;
+  justify-content: center;
+}
+
+.statItem {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.statTal {
+  font-family: var(--font-spoof, sans-serif);
+  font-size: 48px;
+  color: var(--purple);
+  line-height: 1;
+}
+
+.statTekst {
+  font-size: 15px;
+  color: var(--darkblue);
+  line-height: 1.4;
+}
+
+/* delte css */
+.section {
+  padding: 80px 100px;
+}
+
+.inner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.sectionTitle {
+  font-family: var(--font-spoof, sans-serif);
+  font-size: 50px;
+  color: var(--darkblue);
+  margin-bottom: 30px;
+  line-height: 1.2;
+}
+
+.sectionDesc {
+  font-size: 20px;
+  color: var(--darkblue);
+  line-height: 1.65;
+  margin-bottom: 80px;
+}
+
+/* fordele */
+.fordeleGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 50px;
+  margin-bottom: 80px;
+}
+
+.fordeleCard {
+  background: var(--white);
+  border: 2px solid var(--purple);
+  border-radius: 20px;
+  padding: 30px;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.fordeleIcon {
+  width: 60px;
+  height: 60px;
+  border-radius: 10px;
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fordeleTitle {
+  font-size: 20px;
+  font-family: var(--font-spoof, sans-serif);
+  color: var(--darkblue);
+  margin-bottom: 15px;
+}
+
+.fordeleDesc {
+  font-size: 16px;
+  color: var(--darkblue);
+  line-height: 1.6;
+}
+
+/* proces */
+.procesWrap {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  margin-top: 80px;
+  margin-bottom: 80px;
+}
+
+.procesItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Streg + cirkel rækken */
+.procesTop {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 50px;
+}
+
+.procesLine {
+  flex: 1;
+  height: 2px;
+  background: var(--purple);
+}
+
+/* Skjul venstre streg på første og højre streg på sidste */
+.procesLine[data-first="true"] {
+  background: transparent;
+}
+
+.procesLine[data-last="true"] {
+  background: transparent;
+}
+
+.procesCircle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--purple);
+  color: var(--white);
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.procesTekst {
+  text-align: center;
+  padding: 0 24px;
+}
+
+.procesTitel {
+  font-size: 22px;
+  font-family: var(--font-spoof, sans-serif);
+  color: var(--darkblue);
+  margin-bottom: 20px;
+}
+
+.procesDesc {
+  font-size: 16px;
+  color: var(--darkblue);
+  line-height: 1.6;
+  margin-bottom: 80px;
+}
+
+/* cta sektion */
+.ctaSection {
+  padding: 130px 100px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ctaBg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ctaInner {
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+}
+
+.ctaTitle {
+  font-family: var(--font-spoof, sans-serif);
+  font-size: 50px;
+  color: var(--darkblue);
+  margin-bottom: 50px;
+  line-height: 1.2;
+}
+
+.ctaDesc {
+  font-size: 20px;
+  color: var(--darkblue);
+  line-height: 1.65;
+  margin-bottom: 50px;
+}
+
+.ctaBtn {
+  display: inline-block;
+  background: var(--darkblue);
+  color: var(--white);
+  padding: 14px 36px;
+  border-radius: 100px;
+  font-size: 18px;
+  text-decoration: none;
+  margin-bottom: 20px;
+  transition: background 0.2s;
+}
+
+.ctaBtn:hover {
+  background: #b7c1fc;
+  color: #032478;
+}
+
+.ctaSubtext {
+  font-size: 14px;
+  color: #6a7282;
+}
