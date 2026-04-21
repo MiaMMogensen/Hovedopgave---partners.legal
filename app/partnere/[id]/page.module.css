@@ -1,0 +1,289 @@
+.loading {
+  padding: 100px 48px;
+  text-align: center;
+  font-size: 18px;
+  color: var(--darkblue);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+/* hero */
+.hero {
+  background: linear-gradient(180deg, #d4e7f6 0%, #ffffff 100%);
+  padding: 130px 150px 80px;
+}
+
+.heroInner {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.heroTop {
+  display: flex;
+  align-items: flex-start;
+  gap: 40px;
+  margin-bottom: 40px;
+}
+
+.logoWrap {
+  flex-shrink: 0;
+  background: var(--white);
+  border-radius: 16px;
+  padding: 16px;
+  width: 200px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.heroText {
+  flex: 1;
+}
+
+.heroName {
+  font-family: var(--font-caveat, sans-serif);
+  font-size: 42px;
+  font-weight: 700;
+  color: var(--darkblue);
+  margin-bottom: 20px;
+}
+
+.heroDesc {
+  font-size: 18px;
+  color: var(--darkblue);
+  line-height: 1.7;
+}
+
+/* Tags */
+.heroTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 40px;
+}
+
+.tag {
+  padding: 8px 16px;
+  border-radius: 100px;
+  background: var(--tag-background);
+  border: 1px solid var(--purple);
+  font-size: 16px;
+  color: var(--purple);
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin-bottom: 40px;
+}
+
+/* Meta-info række */
+.metaRow {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  flex-wrap: wrap;
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  color: var(--darkblue);
+}
+
+/* indhold */
+.content {
+  padding: 48px 130px 80px;
+}
+
+.contentInner {
+  max-width: 1300px;
+  margin: 0 auto;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  gap: 50px;
+  align-items: start;
+}
+
+/* kort */
+.card {
+  background: var(--white);
+  border: 1px solid var(--purple);
+  border-radius: 20px;
+  padding: 30px;
+  margin-bottom: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+  margin: 0;
+}
+
+/* venstre */
+.left {
+  min-width: 0;
+}
+
+/* Ydelser grid */
+.ydelsGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.ydelseItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border: 1px solid var(--purple);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 16px;
+  color: var(--purple);
+  background-color: var(--tag-background);
+}
+
+.ydelseIcon {
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.aboutText {
+  font-size: 16px;
+  color: var(--darkblue);
+  line-height: 1.7;
+}
+
+/* højre */
+.right {
+  position: sticky;
+  top: 100px;
+}
+
+/* CTA knapper */
+.ctaPrimary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--purple);
+  color: var(--white);
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 20px;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.ctaPrimary:hover {
+  background: var(--darkblue);
+}
+
+.ctaDivider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin: 4px 0;
+}
+
+.ctaSecondary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--darkblue);
+  color: var(--white);
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 16px;
+  text-decoration: none;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.ctaSecondary:hover {
+  background: var(--purple);
+}
+
+.ctaOutline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: var(--white);
+  color: var(--darkblue);
+  border: 1px solid var(--darkblue);
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-size: 16px;
+  text-decoration: none;
+  text-align: center;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.ctaOutline:hover {
+  background: var(--darkblue);
+  color: var(--white);
+}
+
+/* Oplysninger */
+.infoList {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.infoItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 15px;
+}
+
+.infoIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.infoLabel {
+  font-size: 16px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+  margin-bottom: 8px;
+}
+
+.infoValue {
+  font-size: 14px;
+  color: var(--darkblue);
+}
