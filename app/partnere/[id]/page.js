@@ -26,7 +26,7 @@ function usePartner(id) {
   return { partner, loading };
 }
 
-const INFO_ITEMS = [
+const infoItems = [
   {
     key: "ekspertise",
     label: "Ekspertiseområde",
@@ -230,7 +230,7 @@ export default function PartnerProfilePage() {
               <div className={styles.card}>
                 <h2 className={styles.cardTitle}>Oplysninger</h2>
                 <div className={styles.infoList}>
-                  {INFO_ITEMS.map((item) => {
+                  {infoItems.map((item) => {
                     const value = partner[item.key];
                     if (!value || (Array.isArray(value) && value.length === 0))
                       return null;
