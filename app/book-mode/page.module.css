@@ -1,0 +1,376 @@
+/* hero */
+.hero {
+  background: linear-gradient(180deg, #d4e7f6 0%, #ffffff 100%);
+  padding: 130px 100px 60px;
+  text-align: center;
+}
+
+.heroInner {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.catLabel {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--purple);
+  margin-bottom: 12px;
+  margin-top: 20px;
+}
+
+.heroTitle {
+  font-family: var(--font-spoof, sans-serif);
+  font-size: 50px;
+  color: var(--darkblue);
+  margin-bottom: 50px;
+  line-height: 1.15;
+  margin-top: 0;
+}
+
+.heroDesc {
+  font-size: 18px;
+  color: var(--darkblue);
+  line-height: 1.65;
+}
+
+/* formular */
+.formSection {
+  padding: 48px 100px 80px;
+}
+
+.inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.formCard {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 30px 50px 50px 50px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+/* grid */
+.formGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 35px;
+  margin-bottom: 30px;
+}
+
+.fullWidth {
+  grid-column: 1 / -1;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.label {
+  font-size: 16px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+  margin-top: 20px;
+}
+
+.required {
+  color: red;
+}
+
+.input {
+  border: 1.5px solid var(--purple);
+  border-radius: 12px;
+  padding: 18px 16px;
+  font-size: 15px;
+  font-family: var(--font-poppins);
+  color: var(--darkblue);
+  background: var(--white);
+  outline: none;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s;
+}
+
+.input::placeholder {
+  color: var(--darkblue);
+  opacity: 0.5;
+}
+
+.divider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  margin-bottom: 60px;
+  margin-top: 60px;
+}
+
+.formNote {
+  font-size: 15px;
+  color: #6a7282;
+  line-height: 1.6;
+  margin-bottom: 60px;
+  text-align: center;
+}
+
+.formNoteLink {
+  color: var(--purple);
+  text-decoration: underline;
+}
+
+.submitWrap {
+  display: flex;
+  justify-content: center;
+}
+
+.submitBtn {
+  background: var(--darkblue);
+  color: var(--white);
+  border: none;
+  padding: 14px 36px;
+  border-radius: 100px;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.submitBtn:hover {
+  background: var(--darkblue);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* succes */
+.formSectionSuccess {
+  padding: 80px 100px;
+  background: linear-gradient(180deg, #d4e7f6 0%, #ffffff 100%);
+}
+
+.successWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 30px 30px;
+}
+
+.successIcon {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--tag-background);
+  border: 1px solid var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.successTitle {
+  font-family: var(--font-spoof, sans-serif);
+  font-size: 50px;
+  color: var(--darkblue);
+  margin-bottom: 40px;
+}
+
+.successDesc {
+  font-size: 20px;
+  color: var(--darkblue);
+  line-height: 1.65;
+  margin-bottom: 20px;
+}
+
+.successDivider {
+  border: none;
+  border-top: 1px solid #e2e8f0;
+  width: 100%;
+  margin: 32px 0;
+}
+
+/* Næste trin */
+.nextStepsLabel {
+  font-size: 20px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+  align-self: flex-start;
+  margin-bottom: 40px;
+  margin-top: 20px;
+}
+
+.nextSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  text-align: left;
+}
+
+.nextStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.stepCircle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 1px solid #6a7282;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  color: #6a7282;
+  flex-shrink: 0;
+}
+
+.stepCircleDone {
+  background: var(--purple);
+  border-color: var(--purple);
+  color: var(--white);
+}
+
+.stepCircleActive {
+  border: 2px solid var(--purple);
+  color: var(--purple);
+  background-color: var(--tag-background);
+}
+
+.stepContent {
+  padding-bottom: 20px;
+}
+
+.stepTitle {
+  font-size: 16px;
+  font-family: var(--font-spoof);
+  color: #6a7282;
+  margin-bottom: 10px;
+}
+
+.stepTitleDone {
+  color: var(--purple);
+}
+
+.stepTitleActive {
+  color: var(--purple);
+}
+
+.stepDesc {
+  font-size: 15px;
+  color: #6a7282;
+  line-height: 1.6;
+}
+
+.stepDescDone {
+  color: var(--purple);
+}
+
+.stepDescActive {
+  color: var(--purple);
+}
+
+/* Oplysninger tabel */
+.oplysningerWrap {
+  width: 100%;
+  max-width: 500px;
+  text-align: left;
+  border: 2px solid var(--purple);
+  border-radius: 20px;
+  padding: 30px 30px 5px 30px;
+  overflow: hidden;
+  margin-top: 100px;
+  margin-bottom: 80px;
+}
+
+.oplysningerTitle {
+  font-size: 16px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+  margin-bottom: 20px;
+}
+
+.oplysningerTable {
+  width: calc(100% + 60px);
+  margin-left: -30px;
+  margin-right: -30px;
+  border-collapse: collapse;
+}
+
+.oplysningerRow {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.oplysningerRow:last-child {
+  border-bottom: none;
+}
+
+.oplysningerLabel {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--darkblue);
+  padding: 18px 30px;
+  width: 140px;
+}
+
+.oplysningerValue {
+  font-size: 14px;
+  color: var(--darkblue);
+  padding: 14px 30px;
+}
+
+/* Knapper */
+.successActions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 16px;
+  margin-top: 50px;
+}
+
+.successBtnOutline {
+  padding: 12px 24px;
+  border-radius: 100px;
+  border: 1px solid var(--darkblue);
+  color: var(--darkblue);
+  font-size: 16px;
+  text-decoration: none;
+  transition:
+    background 0.2s,
+    color 0.2s;
+}
+
+.successBtnOutline:hover {
+  background: var(--darkblue);
+  color: #fff;
+}
+
+.successBtnPrimary {
+  padding: 12px 24px;
+  border-radius: 100px;
+  background: var(--darkblue);
+  color: #fff;
+  border: 1px solid var(--darkblue);
+  font-size: 16px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.successBtnPrimary:hover {
+  background: var(--purple);
+}
+
+/* error */
+.inputError {
+  border-color: #e53e3e;
+}
+
+.fieldError {
+  font-size: 13px;
+  color: #e53e3e;
+  margin: 0;
+}
