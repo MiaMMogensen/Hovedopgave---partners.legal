@@ -1,0 +1,158 @@
+.page {
+  background: linear-gradient(180deg, #d4e7f6 0%, #ffffff 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 24px;
+}
+
+.loginWrap {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 40px;
+  width: 100%;
+  max-width: 550px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.iconWrap {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  background: var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 0px;
+}
+
+.title {
+  font-family: var(--font-spoof, sans-serif);
+  font-size: 36px;
+  color: var(--darkblue);
+  margin-bottom: 20px;
+}
+
+.desc {
+  font-size: 16px;
+  color: var(--darkblue);
+  margin-bottom: 60px;
+  line-height: 1.6;
+}
+
+.form {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.label {
+  font-size: 15px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+}
+
+.input {
+  border: 1.5px solid var(--purple);
+  border-radius: 12px;
+  padding: 18px;
+  font-size: 15px;
+  font-family: var(--font-poppins);
+  color: var(--darkblue);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input::placeholder {
+  color: var(--darkblue);
+  opacity: 0.5;
+}
+
+.forgotLink {
+  font-size: 12px;
+  color: var(--purple);
+  text-decoration: none;
+  text-align: right;
+  align-self: flex-end;
+}
+
+.forgotLink:hover {
+  text-decoration: underline;
+}
+
+.errorMsg {
+  font-size: 14px;
+  color: #e53e3e;
+  text-align: left;
+  margin: 0;
+}
+
+.submitBtn {
+  background: var(--purple);
+  color: var(--white);
+  border: none;
+  padding: 16px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 25px;
+  margin-bottom: 25px;
+}
+
+.submitBtn:hover {
+  background: var(--darkblue);
+}
+
+.submitBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.dividerRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  margin: 24px 0 30px;
+}
+
+.dividerLine {
+  flex: 1;
+  height: 1px;
+  background: #e2e8f0;
+}
+
+.dividerText {
+  font-size: 14px;
+  color: #a0aec0;
+}
+
+.signupText {
+  font-size: 15px;
+  color: var(--darkblue);
+}
+
+.signupLink {
+  color: var(--purple);
+  text-decoration: none;
+}
+
+.signupLink:hover {
+  text-decoration: underline;
+}

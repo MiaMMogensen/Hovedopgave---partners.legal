@@ -681,7 +681,7 @@ export default function OnboardingPage() {
 
           {/* Progress indikator */}
           <div className={styles.progressWrap}>
-            {TRIN.map((trin, index) => (
+            {trin.map((trin, index) => (
               <div key={trin.num} className={styles.progressItem}>
                 <div className={styles.progressStep}>
                   <div
