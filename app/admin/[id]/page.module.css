@@ -1,0 +1,404 @@
+.layout {
+  --admin-sidebar-width: 260px;
+  --admin-header-height: 90px;
+  min-height: calc(100vh - var(--admin-header-height));
+}
+
+.loading {
+  padding: 80px;
+  text-align: center;
+  font-size: 16px;
+  color: #6a7282;
+}
+
+/* sidebar */
+.sidebar {
+  background: var(--white);
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 90px;
+  padding: 40px 20px 20px 20px;
+  position: fixed;
+  top: var(--admin-header-height);
+  left: 0;
+  width: var(--admin-sidebar-width);
+  height: calc(100vh - var(--admin-header-height));
+  overflow: hidden;
+}
+
+.sidebarTitle {
+  font-family: var(--font-spoof);
+  font-size: 20px;
+  color: var(--darkblue);
+  margin-bottom: 15px;
+}
+
+.sidebarDesc {
+  font-size: 13px;
+  color: var(--darkblue);
+  margin-bottom: 30px;
+}
+
+.sidebarNav {
+  margin-bottom: 32px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--darkblue);
+  cursor: pointer;
+}
+
+.navItemActive {
+  background: var(--purple);
+  color: var(--white);
+}
+
+.sidebarUser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.userAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--tag-background);
+  color: var(--purple);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.userName {
+  font-size: 14px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+}
+
+.userOrg {
+  font-size: 12px;
+  color: #6a7282;
+  margin-top: 2px;
+}
+
+/* main */
+.main {
+  background: linear-gradient(180deg, #d2d8fd 0%, #ffffff 100%);
+  margin-left: var(--admin-sidebar-width);
+  min-height: calc(100vh - var(--admin-header-height));
+  padding: 40px 80px;
+}
+
+.backLink {
+  display: inline-block;
+  font-size: 14px;
+  color: var(--darkblue);
+  text-decoration: none;
+  margin-bottom: 20px;
+}
+
+.backLink:hover {
+  text-decoration: underline;
+}
+
+.pageTitle {
+  font-family: var(--font-spoof);
+  font-size: 36px;
+  color: var(--darkblue);
+  margin-bottom: 15px;
+}
+
+.pageMeta {
+  font-size: 14px;
+  color: #6a7282;
+  margin-bottom: 32px;
+}
+
+/* grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 500px;
+  gap: 50px;
+  align-items: start;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+}
+
+.right {
+  display: flex;
+  flex-direction: column;
+  gap: 50px;
+  position: sticky;
+  top: 40px;
+}
+
+/* kort */
+.card {
+  background: var(--white);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.cardTitle {
+  font-size: 16px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+  padding: 25px;
+  border-bottom: 1px solid #e2e8f0;
+  margin: 0;
+}
+
+/* info rækker */
+.infoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 50px;
+  padding: 25px 25px;
+  border-bottom: 1px solid #f0f4ff;
+}
+
+.infoRow:last-child {
+  border-bottom: none;
+}
+
+.infoLabel {
+  font-size: 14px;
+  font-weight: 500;
+  font-family: var(--font-poppins);
+  color: var(--darkblue);
+  width: 150px;
+  flex-shrink: 0;
+}
+
+.infoValue {
+  font-size: 14px;
+  color: #6a7282;
+  flex: 1;
+  line-height: normal;
+}
+
+/* dokumenter */
+.docRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 25px;
+  border-bottom: 1px solid #f0f4ff;
+}
+
+.docRow:last-child {
+  border-bottom: none;
+}
+
+.docIcon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: #fefce8;
+  border: 1px solid #a65f00;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.docInfo {
+  flex: 1;
+}
+
+.docName {
+  font-size: 14px;
+  color: var(--darkblue);
+}
+
+.downloadBtn {
+  font-size: 13px;
+  color: var(--purple);
+  cursor: pointer;
+}
+
+/* formularer i højre kolonne */
+.selectRow {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 25px 25px;
+}
+
+.selectLabel {
+  font-size: 14px;
+  color: var(--darkblue);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.select {
+  flex: 1;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 100px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-family: inherit;
+  color: var(--darkblue);
+  background: var(--white);
+  outline: none;
+  cursor: pointer;
+}
+
+.actionBtns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin: 25px;
+}
+
+.saveBtn {
+  background: #008236;
+  color: var(--white);
+  border: none;
+  padding: 13px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.saveBtn:hover {
+  opacity: 0.85;
+}
+
+.saveBtnFull {
+  width: 90%;
+  margin: 0 25px 25px 25px;
+}
+
+.pauseBtn {
+  background: #fef2f2;
+  color: #c10007;
+  border: 1.5px solid #c10007;
+  padding: 13px 16px;
+  border-radius: 20px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.pauseBtn:hover {
+  background: #fff1f1;
+}
+
+/* kompetencer */
+.kompetencerGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 25px;
+}
+
+.kompetenceBtn {
+  padding: 8px 14px;
+  border-radius: 100px;
+  border: 1.5px solid #e2e8f0;
+  background: var(--white);
+  font-size: 14px;
+  color: var(--darkblue);
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+
+.kompetenceBtnActive {
+  background: #f0fdf4;
+  border-color: #008236;
+  color: #008236;
+}
+
+.statCards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.statCardAktivering {
+  background: #fefce8;
+}
+
+.statCardAktiv {
+  background: #f0fdf4;
+}
+
+.statCardPause {
+  background: #eceefe;
+}
+
+.statCardAfsluttet {
+  background: #fef2f2;
+}
+
+.statLabel {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.statCardAktivering .statLabel {
+  color: #a65f00;
+}
+
+.statCardAktiv .statLabel {
+  color: #008236;
+}
+
+.statCardPause .statLabel {
+  color: var(--purple);
+}
+
+.statCardAfsluttet .statLabel {
+  color: #c10007;
+}
+
+.statNum {
+  font-family: var(--font-spoof);
+  font-size: 28px;
+  color: var(--darkblue);
+}
+
+.statCardAktivering .statNum {
+  color: #a65f00;
+}
+
+.statCardAktiv .statNum {
+  color: #008236;
+}
+
+.statCardPause .statNum {
+  color: var(--purple);
+}
+
+.statCardAfsluttet .statNum {
+  color: #c10007;
+}

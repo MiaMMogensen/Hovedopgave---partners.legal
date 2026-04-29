@@ -1,0 +1,427 @@
+.layout {
+  --admin-sidebar-width: 260px;
+  --admin-header-height: 90px;
+  min-height: calc(100vh - var(--admin-header-height));
+}
+
+/* sidebar */
+.sidebar {
+  background: var(--white);
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  gap: 90px;
+  padding: 40px 20px 20px 20px;
+  position: fixed;
+  top: var(--admin-header-height);
+  left: 0;
+  width: var(--admin-sidebar-width);
+  height: calc(100vh - var(--admin-header-height));
+  overflow: hidden;
+}
+
+.sidebarTitle {
+  font-family: var(--font-spoof);
+  font-size: 20px;
+  color: var(--darkblue);
+  margin-bottom: 15px;
+}
+
+.sidebarDesc {
+  font-size: 13px;
+  color: var(--darkblue);
+  margin-bottom: 30px;
+}
+
+.sidebarNav {
+  margin-bottom: 32px;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px;
+  border-radius: 10px;
+  font-size: 14px;
+  color: var(--darkblue);
+  cursor: pointer;
+}
+
+.navItemActive {
+  background: var(--purple);
+  color: var(--white);
+}
+
+/* stat kort */
+.statCards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.statCard {
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.statCardAktivering {
+  background: #fefce8;
+}
+
+.statCardAktiv {
+  background: #f0fdf4;
+}
+
+.statCardPause {
+  background: #eceefe;
+}
+
+.statCardAfsluttet {
+  background: #fef2f2;
+}
+
+.statLabel {
+  font-size: 13px;
+  margin-bottom: 4px;
+}
+
+.statCardAktivering .statLabel {
+  color: #a65f00;
+}
+
+.statCardAktiv .statLabel {
+  color: #008236;
+}
+
+.statCardPause .statLabel {
+  color: var(--purple);
+}
+
+.statCardAfsluttet .statLabel {
+  color: #c10007;
+}
+
+.statNum {
+  font-family: var(--font-spoof);
+  font-size: 28px;
+  color: var(--darkblue);
+}
+
+.statCardAktivering .statNum {
+  color: #a65f00;
+}
+
+.statCardAktiv .statNum {
+  color: #008236;
+}
+
+.statCardPause .statNum {
+  color: var(--purple);
+}
+
+.statCardAfsluttet .statNum {
+  color: #c10007;
+}
+
+.sidebarUser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.userAvatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--tag-background);
+  color: var(--purple);
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.userName {
+  font-size: 14px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+}
+
+.userOrg {
+  font-size: 12px;
+  color: #6a7282;
+  margin-top: 2px;
+}
+
+/* main */
+.main {
+  background: linear-gradient(180deg, #d2d8fd 0%, #ffffff 100%);
+  margin-left: var(--admin-sidebar-width);
+  min-height: calc(100vh - var(--admin-header-height));
+  padding: 40px 60px;
+}
+
+.mainHeader {
+  margin-bottom: 60px;
+}
+
+.pageTitle {
+  font-family: var(--font-spoof);
+  font-size: 42px;
+  color: var(--darkblue);
+  margin-bottom: 20px;
+}
+
+.pageDesc {
+  font-size: 16px;
+  color: var(--darkblue);
+}
+
+/* filter bar */
+.filterBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 30px;
+  gap: 16px;
+}
+
+.filterBtns {
+  display: flex;
+  gap: 10px;
+}
+
+.filterBtn {
+  padding: 8px 18px;
+  border-radius: 100px;
+  border: none;
+  background: var(--white);
+  color: var(--darkblue);
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+  border: 1px solid var(--white);
+  transition: all 0.15s;
+}
+
+.filterBtnActive {
+  background: var(--darkblue);
+  color: var(--white);
+  border-color: var(--darkblue);
+}
+
+.searchWrap {
+  display: flex;
+  align-items: center;
+  gap: 1px;
+  background: var(--white);
+  border: 1px solid var(--white);
+  border-radius: 100px;
+  padding: 10px 12px;
+  min-width: 240px;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  font-size: 14px;
+  color: var(--darkblue);
+  background: transparent;
+  width: 100%;
+  font-family: inherit;
+}
+
+.searchInput::placeholder {
+  color: var(--darkblue);
+  opacity: 0.5;
+}
+
+/* tabel */
+.tableWrap {
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tableHead th {
+  padding: 30px 20px;
+  text-align: left;
+  font-size: 15px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+  border-bottom: 1px solid #e2e8f0;
+  background: #f9fafb;
+}
+
+.tableRow {
+  border-bottom: 1px solid #f0f4ff;
+}
+
+.tableRow:last-child {
+  border-bottom: none;
+}
+
+.tableRow td {
+  padding: 20px 20px;
+  vertical-align: middle;
+}
+
+.partnerName {
+  font-size: 14px;
+  font-family: var(--font-poppins);
+  font-weight: 600;
+  color: var(--darkblue);
+  margin-bottom: 10px;
+}
+
+.partnerEmail {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--darkblue);
+}
+
+.kompetencerWrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.kompetenceTag {
+  padding: 6px 10px;
+  border-radius: 100px;
+  border: 1px solid var(--purple);
+  background: var(--tag-background);
+  font-size: 13px;
+  color: var(--purple);
+}
+
+/* status badge */
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 100px;
+  font-size: 13px;
+  border: 1px solid;
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+}
+
+.statusAktivering {
+  color: #a65f00;
+  border-color: #a65f00;
+  background: #fefce8;
+}
+
+.statusAktivering .statusDot {
+  background: #a65f00;
+}
+
+.statusAktiv {
+  color: #008236;
+  border-color: #008236;
+  background: #f0fdf4;
+}
+
+.statusAktiv .statusDot {
+  background: #008236;
+}
+
+.statusPause {
+  color: var(--purple);
+  border-color: var(--purple);
+  background: #eceefe;
+}
+
+.statusPause .statusDot {
+  background: var(--purple);
+}
+
+.statusAfsluttet {
+  color: #c10007;
+  border-color: #c10007;
+  background: #fef2f2;
+}
+.statusAfsluttet .statusDot {
+  background: #c10007;
+}
+
+/* kundecase badges */
+.kundecaseBadge {
+  display: inline-block;
+  padding: 6px 10px;
+  border-radius: 100px;
+  font-size: 13px;
+  border: 1px solid #e2e8f0;
+  color: var(--darkblue);
+  background: #fff;
+}
+
+.kundecaseIkke {
+  color: #6a7282;
+  border-color: #6a7282;
+  background-color: #f4f3f3;
+}
+
+.kundecaseIdentificeret {
+  color: var(--darkblue);
+  border-color: var(--darkblue);
+  background-color: #e6f1fa;
+}
+
+.kundecaseIgang {
+  color: #a65f00;
+  border-color: #a65f00;
+  background: #fefce8;
+}
+
+.kundecaseGennemfort {
+  color: #008236;
+  border-color: #008236;
+  background: #f0fdf4;
+}
+
+.oprettetCell {
+  font-size: 13px;
+  color: var(--darkblue);
+}
+
+.seBtn {
+  background: var(--purple);
+  color: var(--white);
+  padding: 8px 18px;
+  border-radius: 100px;
+  font-size: 13px;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.2s;
+}
+
+.seBtn:hover {
+  background: var(--darkblue);
+}
+
+.loading {
+  text-align: center;
+  padding: 48px;
+  color: #6a7282;
+  font-size: 15px;
+}
