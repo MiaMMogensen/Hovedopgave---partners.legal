@@ -2,6 +2,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Poppins, Caveat } from "next/font/google";
+import ConditionalFooter from "@/components/ConditionalFooter";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -26,7 +27,7 @@ export default function RootLayout({ children }) {
       <body>
         <Header />
         <main style={{ marginTop: "90px" }}>{children}</main>
-        <Footer />
+        <ConditionalFooter />
       </body>
     </html>
   );
