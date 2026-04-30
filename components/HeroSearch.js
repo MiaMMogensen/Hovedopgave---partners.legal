@@ -16,7 +16,9 @@ export default function HeroSearch() {
     ? partners.filter(
         (p) =>
           p.virksomhedsnavn?.toLowerCase().includes(ql) ||
-          p.ekspertise?.some((t) => t.toLowerCase().includes(ql)),
+          p.ekspertise?.some((t) => t.toLowerCase().includes(ql)) ||
+          p.ydelser?.some((t) => t.toLowerCase().includes(ql)) ||
+          p.beskrivelse?.toLowerCase().includes(ql),
       )
     : [];
 

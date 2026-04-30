@@ -17,40 +17,89 @@ const FILTER_CATEGORIES = [
       "Compliance",
       "NIS2",
       "Informationssikkerhed",
-      "Risikovurdering",
+      "Risikostyring",
+      "Cybersikkerhed",
+      "DORA",
+      "AI-loven",
+      "AI-styring",
+      "Dataetik",
+      "It-ret",
+      "Teknologiret",
+      "Kontraktstyring",
     ],
   },
   {
     key: "servicetype",
     label: "Servicetype",
-    options: ["Managed Services", "Rådgivning", "Implementering", "Framework"],
+    options: [
+      "Rådgivning",
+      "Konsulentydelser",
+      "Revision",
+      "DPO-as-a-service",
+      "Leverandørstyring",
+      "Managed Services",
+      "Juridisk rådgivning",
+      "Implementering",
+    ],
   },
   {
     key: "branche",
     label: "Branche",
     options: [
       "Finans",
-      "Sundhed",
-      "Industri",
-      "Teknologi",
+      "Sundhedsvæsen",
+      "Teknologi/IT",
       "Offentlig sektor",
-      "SMV",
+      "Produktion",
+      "E-handel",
+      "Transport og logistik",
     ],
   },
   {
     key: "certificeringer",
     label: "Certificeringer",
-    options: ["ISO 27001", "CIPP/E", "CISSP", "CRISC", "CEH", "ISO 31000"],
+    options: [
+      "ISO 27001",
+      "ISAE 3000",
+      "ISAE 3402",
+      "CIPP/E",
+      "CIPM",
+      "CISSP",
+      "CISM",
+      "ISO 22301",
+      "CEH",
+      "D-mærket",
+    ],
   },
   {
     key: "geografi",
     label: "Geografi",
-    options: ["København", "Aarhus", "Odense", "Aalborg", "Hele Danmark"],
+    options: [
+      "Danmark",
+      "Sverige",
+      "Norge",
+      "Finland",
+      "Tyskland",
+      "Storbritannien",
+      "Holland",
+      "Baltikum",
+      "Sydeuropa",
+      "Globalt",
+    ],
   },
   {
     key: "sprog",
     label: "Sprog",
-    options: ["Dansk", "Engelsk", "Tysk", "Norsk"],
+    options: [
+      "Dansk",
+      "Engelsk",
+      "Tysk",
+      "Norsk",
+      "Svensk",
+      "Fransk",
+      "Hollandsk",
+      "Polsk",
+    ],
   },
 ];
 
@@ -194,7 +243,11 @@ export default function PartnersPage() {
         p.virksomhedsnavn?.toLowerCase().includes(searchText.toLowerCase()) ||
         p.ekspertise?.some((t) =>
           t.toLowerCase().includes(searchText.toLowerCase()),
-        );
+        ) ||
+        p.ydelser?.some((t) =>
+          t.toLowerCase().includes(searchText.toLowerCase()),
+        ) ||
+        p.beskrivelse?.toLowerCase().includes(searchText.toLowerCase());
 
       const matchesFilters = FILTER_CATEGORIES.every((cat) => {
         const active = activeFilters[cat.key];
@@ -209,6 +262,12 @@ export default function PartnersPage() {
     if (sortBy === "alfabetisk") {
       result = [...result].sort((a, b) =>
         a.virksomhedsnavn?.localeCompare(b.virksomhedsnavn),
+      );
+    }
+
+    if (sortBy === "nyeste") {
+      result = [...result].sort(
+        (a, b) => (b.oprettetTimestamp ?? 0) - (a.oprettetTimestamp ?? 0),
       );
     }
 
@@ -345,13 +404,19 @@ export default function PartnersPage() {
                   {filteredPartners.map((p) => (
                     <div key={p.id} className={styles.partnerCard}>
                       <div className={styles.cardTop}>
-                        <Image
-                          src={p.logo}
-                          alt={p.virksomhedsnavn}
-                          width={80}
-                          height={80}
-                          className={styles.partnerLogo}
-                        />
+                        {p.logo ? (
+                          <Image
+                            src={p.logo}
+                            alt={p.virksomhedsnavn}
+                            width={80}
+                            height={80}
+                            className={styles.partnerLogo}
+                          />
+                        ) : (
+                          <div className={styles.logoFallback}>
+                            {p.virksomhedsnavn?.charAt(0)}
+                          </div>
+                        )}
                         <div>
                           <p className={styles.partnerName}>
                             {p.virksomhedsnavn}

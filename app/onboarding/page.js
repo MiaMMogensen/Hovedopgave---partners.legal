@@ -7,7 +7,7 @@ import { ref, push } from "firebase/database";
 import styles from "./page.module.css";
 import Link from "next/link";
 
-const trin = [
+const TRIN = [
   { num: 1, label: "Virksomhed" },
   { num: 2, label: "Kontakt" },
   { num: 3, label: "Ydelser" },
@@ -521,6 +521,14 @@ export default function OnboardingPage() {
         status: "Aktivering",
         featured: false,
         logo: data.logoUrl,
+        forsteKundecase: "Ikke startet",
+        kompetencer: [],
+        oprettet: new Date().toLocaleDateString("da-DK", {
+          day: "numeric",
+          month: "short",
+          year: "numeric",
+        }),
+        oprettetTimestamp: Date.now(),
       });
       setSubmitted(true);
     } catch (err) {
@@ -681,7 +689,7 @@ export default function OnboardingPage() {
 
           {/* Progress indikator */}
           <div className={styles.progressWrap}>
-            {trin.map((trin, index) => (
+            {TRIN.map((trin, index) => (
               <div key={trin.num} className={styles.progressItem}>
                 <div className={styles.progressStep}>
                   <div
@@ -712,7 +720,7 @@ export default function OnboardingPage() {
                     {trin.label}
                   </span>
                 </div>
-                {index < trin.length - 1 && (
+                {index < TRIN.length - 1 && (
                   <div
                     className={`${styles.progressLine} ${aktivtTrin > trin.num ? styles.progressLineDone : ""}`}
                   />
