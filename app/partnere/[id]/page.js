@@ -116,13 +116,7 @@ export default function PartnerProfilePage() {
                   width={16}
                   height={16}
                 />
-                <span>{partner.sprog.join(" og ")}</span>
-              </div>
-            )}
-            {partner.kontakt?.email && (
-              <div className={styles.metaItem}>
-                <Image src="/icons/email.svg" alt="" width={16} height={16} />
-                <span>{partner.kontakt.email}</span>
+                <span>{partner.sprog.join(", ")}</span>
               </div>
             )}
           </div>

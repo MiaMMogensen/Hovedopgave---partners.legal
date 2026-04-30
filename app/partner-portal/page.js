@@ -65,7 +65,7 @@ const geografi_options = [
   "Sydeuropa",
   "Globalt",
 ];
-const certificeringer_options = [
+const certificering_options = [
   "ISO 27001",
   "ISAE 3000",
   "ISAE 3402",
@@ -544,7 +544,7 @@ function PortalContent({ partnerId, partner }) {
                     </p>
                   </div>
                   <div className={styles.certList}>
-                    {CERTIFICERING_OPTIONS.map((cert) => (
+                    {certificering_options.map((cert) => (
                       <label key={cert} className={styles.certItem}>
                         <input
                           type="checkbox"

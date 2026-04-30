@@ -428,7 +428,7 @@ export default function PartnersPage() {
                               width={13}
                               height={13}
                             />
-                            {p.geografi?.[0]}, Danmark
+                            {p.geografi?.[0]}
                           </p>
                         </div>
                       </div>

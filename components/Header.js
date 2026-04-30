@@ -34,7 +34,7 @@ export default function Header() {
         />
       </Link>
       <nav className={styles.nav}>
-        <Link href="/find-partner" className={styles.navLink}>
+        <Link href="/partnere" className={styles.navLink}>
           Find en partner
         </Link>
         <Link href="/bliv-partner" className={styles.navLink}>
