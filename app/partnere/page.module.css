@@ -354,6 +354,21 @@
   flex-shrink: 0;
 }
 
+.logoFallback {
+  width: 80px;
+  height: 80px;
+  border-radius: 12px;
+  background: var(--tag-background);
+  border: 1px solid var(--purple);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--purple);
+  flex-shrink: 0;
+}
+
 .partnerName {
   font-size: 20px;
   font-family: var(--font-caveat, sans-serif);
