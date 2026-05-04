@@ -38,7 +38,7 @@ export default function Footer() {
         <div className={styles.col} style={{ position: "relative" }}>
           <div className={styles.blobBottom}></div>
           <h4 className={styles.colTitle}>For Kunder</h4>
-          <Link href="/find-partner">Find en partner</Link>
+          <Link href="/partnere">Find en partner</Link>
         </div>
 
         <div className={styles.col}>

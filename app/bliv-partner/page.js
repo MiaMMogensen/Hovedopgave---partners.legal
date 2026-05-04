@@ -91,7 +91,7 @@ export default function BlivPartnerPage() {
       </section>
 
       {/* fordele */}
-      <section className={styles.section}>
+      <section id="fordele" className={styles.section}>
         <div className={styles.inner}>
           <p className={styles.catLabel}>Fordele</p>
           <h2 className={styles.sectionTitle}>Hvorfor blive .legal-partner?</h2>
