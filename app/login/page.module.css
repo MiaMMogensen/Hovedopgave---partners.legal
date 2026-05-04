@@ -116,7 +116,7 @@
 }
 
 .submitBtn:hover {
-  background: var(--darkblue);
+  color: var(--darkblue);
 }
 
 .submitBtn:disabled {

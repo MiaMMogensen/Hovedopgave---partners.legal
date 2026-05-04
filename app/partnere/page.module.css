@@ -420,7 +420,7 @@
 }
 
 .cta:hover {
-  background: var(--darkblue);
+  color: var(--darkblue);
 }
 
 .empty {

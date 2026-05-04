@@ -202,7 +202,7 @@
 }
 
 .ctaPrimary:hover {
-  background: var(--darkblue);
+  color: var(--darkblue);
 }
 
 .ctaDivider {
@@ -227,7 +227,7 @@
 }
 
 .ctaSecondary:hover {
-  background: var(--purple);
+  color: var(--purple);
 }
 
 .ctaOutline {
@@ -249,8 +249,13 @@
 }
 
 .ctaOutline:hover {
-  background: var(--darkblue);
-  color: var(--white);
+  color: var(--purple);
+}
+
+.ctaSecondary:hover img,
+.ctaOutline:hover img {
+  filter: brightness(0) saturate(100%) invert(47%) sepia(69%) saturate(500%)
+    hue-rotate(200deg) brightness(100%);
 }
 
 /* Oplysninger */

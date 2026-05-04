@@ -48,8 +48,7 @@
 }
 
 .heroCta:hover {
-  background: #b7c1fc;
-  color: #032478;
+  color: var(--purple);
 }
 
 /* Statistikker */
@@ -272,8 +271,7 @@
 }
 
 .ctaBtn:hover {
-  background: #b7c1fc;
-  color: #032478;
+  color: var(--purple);
 }
 
 .ctaSubtext {

@@ -692,8 +692,7 @@
 }
 
 .backBtn:hover {
-  background: var(--darkblue);
-  color: var(--white);
+  color: var(--purple);
 }
 
 .nextBtn {
@@ -710,7 +709,7 @@
 }
 
 .nextBtn:hover {
-  background: var(--purple);
+  color: var(--purple);
 }
 
 .summarySection {

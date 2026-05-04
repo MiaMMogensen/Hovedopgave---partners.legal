@@ -118,6 +118,10 @@
   text-decoration: underline;
 }
 
+.formNoteLink:hover {
+  color: var(--darkblue);
+}
+
 .submitWrap {
   display: flex;
   justify-content: center;
@@ -136,7 +140,7 @@
 }
 
 .submitBtn:hover {
-  background: var(--darkblue);
+  color: var(--purple);
 }
 
 .submitBtn:disabled {

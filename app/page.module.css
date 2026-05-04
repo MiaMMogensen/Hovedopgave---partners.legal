@@ -190,9 +190,7 @@
 }
 
 .progCta:hover {
-  background: var(--white);
-  color: #032478;
-  border: 1px solid var(--darkblue);
+  color: var(--purple);
 }
 
 /* partneruniverset sektion */
