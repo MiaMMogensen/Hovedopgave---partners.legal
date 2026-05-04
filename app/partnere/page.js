@@ -6,6 +6,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePartners } from "@/app/usePartners";
 import styles from "./page.module.css";
+import { Suspense } from "react";
 
 const FILTER_CATEGORIES = [
   {
@@ -164,7 +165,7 @@ function FilterGroup({ category, activeFilters, onToggle }) {
   );
 }
 
-export default function PartnersPage() {
+function PartnersContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -474,5 +475,13 @@ export default function PartnersPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function PartnersPage() {
+  return (
+    <Suspense fallback={<div>Henter partnere...</div>}>
+      <PartnersContent />
+    </Suspense>
   );
 }
