@@ -8,7 +8,7 @@ import { usePartners } from "@/app/usePartners";
 import styles from "./page.module.css";
 import { Suspense } from "react";
 
-const FILTER_CATEGORIES = [
+const filter_categories = [
   {
     key: "ekspertise",
     label: "Ekspertiseområde",
@@ -104,13 +104,13 @@ const FILTER_CATEGORIES = [
   },
 ];
 
-const SORT_OPTIONS = [
+const sort_options = [
   { value: "anbefalet", label: "Anbefalet" },
   { value: "nyeste", label: "Nyeste" },
   { value: "alfabetisk", label: "Alfabetisk" },
 ];
 
-const HOW_TO = [
+const how_to = [
   {
     icon: "/icons/search.svg",
     title: "Søg og filtrer",
@@ -176,11 +176,11 @@ function PartnersContent() {
 
   const [activeFilters, setActiveFilters] = useState(() => {
     const initial = {};
-    FILTER_CATEGORIES.forEach((c) => {
+    filter_categories.forEach((c) => {
       initial[c.key] = [];
     });
     if (urlQuery) {
-      FILTER_CATEGORIES.forEach((c) => {
+      filter_categories.forEach((c) => {
         const match = c.options.filter((o) =>
           o.toLowerCase().includes(urlQuery.toLowerCase()),
         );
@@ -229,7 +229,7 @@ function PartnersContent() {
 
   function clearAll() {
     const empty = {};
-    FILTER_CATEGORIES.forEach((c) => {
+    filter_categories.forEach((c) => {
       empty[c.key] = [];
     });
     setActiveFilters(empty);
@@ -250,7 +250,7 @@ function PartnersContent() {
         ) ||
         p.beskrivelse?.toLowerCase().includes(searchText.toLowerCase());
 
-      const matchesFilters = FILTER_CATEGORIES.every((cat) => {
+      const matchesFilters = filter_categories.every((cat) => {
         const active = activeFilters[cat.key];
         if (!active || active.length === 0) return true;
         const partnerValues = p[cat.key] ?? [];
@@ -316,7 +316,7 @@ function PartnersContent() {
                   <p className={styles.sidebarTitle}>Filtre</p>
                 </div>
               </div>
-              {FILTER_CATEGORIES.map((cat) => (
+              {filter_categories.map((cat) => (
                 <FilterGroup
                   key={cat.key}
                   category={cat}
@@ -341,7 +341,7 @@ function PartnersContent() {
                     onClick={() => setSortOpen((p) => !p)}
                   >
                     <span className={styles.sortBtnLabel}>Sortér efter:</span>
-                    {SORT_OPTIONS.find((o) => o.value === sortBy)?.label}
+                    {sort_options.find((o) => o.value === sortBy)?.label}
                     <span
                       className={`${styles.sortArrow} ${sortOpen ? styles.sortArrowOpen : ""}`}
                     >
@@ -350,7 +350,7 @@ function PartnersContent() {
                   </button>
                   {sortOpen && (
                     <div className={styles.sortDropdown}>
-                      {SORT_OPTIONS.map((o) => (
+                      {sort_options.map((o) => (
                         <button
                           key={o.value}
                           className={styles.sortOption}
@@ -460,7 +460,7 @@ function PartnersContent() {
             Sådan finder du den rette partner
           </h2>
           <div className={styles.howToGrid}>
-            {HOW_TO.map((s) => (
+            {how_to.map((s) => (
               <div key={s.title} className={styles.howToCard}>
                 <div className={styles.howToIcon}>
                   <Image src={s.icon} alt="" width={35} height={35} />
