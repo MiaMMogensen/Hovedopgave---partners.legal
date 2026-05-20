@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
 import { db } from "@/app/firebaseConfig";
 import { ref, push } from "firebase/database";
 import styles from "./page.module.css";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const TRIN = [
   { num: 1, label: "Virksomhed" },
@@ -395,6 +396,38 @@ export default function OnboardingPage() {
   const [showTip, setShowTip] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [trinErrors, setTrinErrors] = useState({});
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleBeforeUnload = (e) => {
+      if (aktivtTrin > 1 && !submitted) {
+        e.preventDefault();
+        e.returnValue = "";
+      }
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+  }, [aktivtTrin, submitted]);
+
+  useEffect(() => {
+    if (aktivtTrin === 1 || submitted) return;
+
+    const handleClick = (e) => {
+      const link = e.target.closest("a");
+      if (!link) return;
+      const href = link.getAttribute("href");
+      if (!href || href.startsWith("#")) return;
+
+      e.preventDefault();
+      const confirm = window.confirm(
+        "Er du sikker på at du vil forlade siden? Dine oplysninger gemmes ikke.",
+      );
+      if (confirm) router.push(href);
+    };
+
+    document.addEventListener("click", handleClick, true);
+    return () => document.removeEventListener("click", handleClick, true);
+  }, [aktivtTrin, submitted, router]);
 
   const [data, setData] = useState({
     virksomhedsnavn: "",

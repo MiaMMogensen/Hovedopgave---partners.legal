@@ -105,7 +105,6 @@ const filter_categories = [
 ];
 
 const sort_options = [
-  { value: "anbefalet", label: "Anbefalet" },
   { value: "nyeste", label: "Nyeste" },
   { value: "alfabetisk", label: "Alfabetisk" },
 ];
@@ -190,7 +189,7 @@ function PartnersContent() {
     return initial;
   });
 
-  const [sortBy, setSortBy] = useState("anbefalet");
+  const [sortBy, setSortBy] = useState("nyeste");
   const [sortOpen, setSortOpen] = useState(false);
   const sortRef = useRef(null);
 
@@ -396,6 +395,10 @@ function PartnersContent() {
               {!loading && filteredPartners.length === 0 ? (
                 <div className={styles.empty}>
                   <p>Ingen partnere matcher din søgning.</p>
+                  <p className={styles.emptyHint}>
+                    Prøv at justere dine filtre eller søgeord for at finde flere
+                    resultater.
+                  </p>
                   <button className={styles.clearBtn} onClick={clearAll}>
                     Ryd filtre
                   </button>
