@@ -11,7 +11,8 @@ export async function POST(request) {
   }
 
   const onboardingUrl =
-    process.env.ONBOARDING_URL || "https://ditdomæne.dk/onboarding";
+    process.env.ONBOARDING_URL ||
+    "https://hovedopgave-partners-legal.vercel.app/onboarding";
 
   const transporter = nodemailer.createTransport({
     service: "gmail",
