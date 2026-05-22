@@ -300,11 +300,21 @@ export default function AnsøgPage() {
 
                 <p className={styles.formNote}>
                   Ved at klikke på opret nedenfor accepterer du .legals{" "}
-                  <a href="/partnervilkaar" className={styles.formNoteLink}>
+                  <a
+                    href="https://www.dotlegal.com/partner-terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.formNoteLink}
+                  >
                     Partnervilkår
                   </a>{" "}
                   og{" "}
-                  <a href="/privatlivspolitik" className={styles.formNoteLink}>
+                  <a
+                    href="https://www.dotlegal.com/en/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.formNoteLink}
+                  >
                     Privatlivspolitik
                   </a>
                 </p>
