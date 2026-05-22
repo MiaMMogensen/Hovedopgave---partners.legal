@@ -1539,16 +1539,23 @@ export default function OnboardingPage() {
                 <hr className={styles.divider} />
                 <p className={styles.formNote}>
                   Ved at oprette din profil accepterer du .legals{" "}
-                  <Link href="/partnervilkaar" className={styles.formNoteLink}>
+                  <a
+                    href="https://www.dotlegal.com/partner-terms"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={styles.formNoteLink}
+                  >
                     Partnervilkår
-                  </Link>{" "}
+                  </a>{" "}
                   og{" "}
-                  <Link
-                    href="/privatlivspolitik"
+                  <a
+                    href="https://www.dotlegal.com/en/privacy-policy"
+                    target="_blank"
+                    rel="noopener noreferrer"
                     className={styles.formNoteLink}
                   >
                     Privatlivspolitik
-                  </Link>
+                  </a>
                 </p>
                 <div className={styles.navRow}>
                   <button
