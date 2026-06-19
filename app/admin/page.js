@@ -1,13 +1,33 @@
-"use client";
+"use client"; /* fortæller Next.js at denne fil er en klientkomponent. Den kører i browseren og ikke på serveren. Det er nødvendigt fordi jeg bruger React hooks som useState og useEffect der kun virker i browseren */
 
-import { useState, useMemo } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { usePartners } from "@/app/usePartners";
+import {
+  useState,
+  useMemo,
+  useEffect,
+} from "react"; /* importerer tre hooks fra React. useState til at gemme og opdatere data i komponenten. useMemo til at cache beregnede værdier så de ikke genberegnes unødvendigt. useEffect til at køre kode som sideeffekter - i dette tilfølde at oprette en firebase lytter */
+/* Next.js komponenter */
+import Link from "next/link"; /* Link bruges til navigation uden at siden genindlæses */
+import Image from "next/image"; /* Image optimerer billeder automatisk for bedre performance */
+import { usePartners } from "@/app/usePartners"; /* den globale custom hook der henter alle partnere */
 import styles from "./page.module.css";
+import { db } from "@/app/firebaseConfig"; /* importerer den konfigurerede Firebase database instans */
+import {
+  ref,
+  onValue,
+} from "firebase/database"; /* Firebase-funktioner til at oprette referencer og lytte til data i realtid */
 
-const status_filters = ["Alle", "Aktivering", "Aktiv", "På pause", "Afsluttet"];
+/* definerer de mulige filterknapper øverst i oversigten og deres rækkefølge */
+const status_filters = [
+  "Alle",
+  "Aktivering",
+  "Aktiv",
+  "På pause",
+  "Afsluttet",
+  "Afventer godkendelse",
+];
 
+/* to objekter der mapper status- og kundecaseværdier til CSS-klasser */
+/* Bruges til at give badges den rigtige farve baseret på partnerens status og kundecase-fremdrift */
 const status_colors = {
   Aktivering: styles.statusAktivering,
   Aktiv: styles.statusAktiv,
@@ -24,29 +44,60 @@ const kundecase_colors = {
 
 export default function AdminPage() {
   const { partners, loading } = usePartners();
+  /* henter alle partnere via den globale usePartners hook der lytter til Firebase i realtid og destrukturerer de to værdier den returnerer til et array af alle partnere og en loading-tilstand */
+  const [godkendelser, setGodkendelser] = useState({});
+  /* state til godkendelsesanmodninger initialiseret som et tomt objekt. Det vil blive opdateret i realtid med data fra Firebase, hvor hver nøgle er en partner-id og værdien er godkendelsesanmodningens data (hvis der er en afventende anmodning for den partner) */
+
+  /* henter alle godkendelsesanmodninger fra Firebase i realtid */
+  /* snapshot.val() ?? {} giver et tomt objekt som fallback hvis noden ikke eksisterer, så man undgår fejl ved at prøve at tilgå egenskaber på undefined */
+  /* ref(db, "godkendelser") opretter en reference til "godkendelser" noden i Firebase databasen, og onValue lytter til ændringer på den reference og opdaterer godkendelser state hver gang der kommer nye data */
+  useEffect(() => {
+    const godkendelsesRef = ref(db, "godkendelser");
+    const unsubscribe = onValue(godkendelsesRef, (snapshot) => {
+      setGodkendelser(snapshot.val() ?? {});
+    });
+    return () =>
+      unsubscribe(); /* cleanup funktion der fjerner lytteren når komponenten unmountes og forhindrer memory leaks */
+  }, []); /* det tomme dependency array [] sikrer at denne effekt kun kører én gang ved komponentens første render */
+
   const [activeFilter, setActiveFilter] = useState("Alle");
   const [search, setSearch] = useState("");
 
+  /* beregner antallet af partnere i hver statuskategori og antallet af godkendelser, som bruges til at vise tal på filterknapperne i sidebar */
   const counts = useMemo(() => {
+    /* useMemo sikrer at beregningen kun køres igen når partners eller godkendelser ændrer sig ([partners, godkendelser]), hvilket forbedrer performance ved at undgå unødvendige beregninger ved hver render */
     return {
       Aktivering: partners.filter((p) => p.status === "Aktivering").length,
       Aktiv: partners.filter((p) => p.status === "Aktiv").length,
       "På pause": partners.filter((p) => p.status === "På pause").length,
       Afsluttet: partners.filter((p) => p.status === "Afsluttet").length,
+      Godkendelser: Object.keys(godkendelser).length,
+      /* Object.keys(godkendelser).length tæller antallet af nøgler i godkendelser-objektet, hvilket svarer til antallet af godkendelsesanmodninger */
     };
-  }, [partners]);
+  }, [partners, godkendelser]);
 
+  /* filtrerer partnerlisten baseret på det aktive filter og søgeteksten */
   const filtered = useMemo(() => {
     return partners.filter((p) => {
       const matchesFilter =
-        activeFilter === "Alle" || p.status === activeFilter;
+        /* matchesFilter håndterer tre tilfælde */
+        activeFilter === "Alle" ||
+        /* "Alle" viser alle partnere uanset status */
+        p.status === activeFilter ||
+        /* hvis activeFilter er en specifik status (f.eks. "Aktiv"), matchesFilter er sandt for partnere der har den status */
+        (activeFilter === "Afventer godkendelse" && godkendelser[p.id]);
+      /* "Afventer godkendelse" tjekker om partnerens id eksisterer som nøgle i godkendelser-objektet, hvilket indikerer at der er en afventende godkendelsesanmodning for den partner */
       const matchesSearch =
+        /* matchesSearch matcher virksomhedsnavn og kontakt-email mod søgeteksten, og er sandt hvis søgeteksten er tom eller hvis nogen af de to felter indeholder søgeteksten (case-insensitive) */
         !search ||
         p.virksomhedsnavn?.toLowerCase().includes(search.toLowerCase()) ||
         p.kontakt?.email?.toLowerCase().includes(search.toLowerCase());
-      return matchesFilter && matchesSearch;
+      return (
+        matchesFilter && matchesSearch
+      ); /* for at en partner skal inkluderes i den filtrerede liste, skal den både matche det aktive filter og søgeteksten */
     });
-  }, [partners, activeFilter, search]);
+  }, [partners, activeFilter, search, godkendelser]);
+  /* denne useMemo kører igen når nogen af dependencies ændrer sig, og returnerer den filtrerede liste af partnere baseret på de valgte kriterier */
 
   return (
     <div className={styles.layout}>
@@ -81,6 +132,13 @@ export default function AdminPage() {
             <p className={styles.statLabel}>Afsluttet</p>
             <p className={styles.statNum}>{counts.Afsluttet}</p>
           </div>
+          {/* stat-kortet for godkendelser vises kun når de faktisk er afventende godkendelser. counts.Godkendelser > 0 %% sørger for det */}
+          {counts.Godkendelser > 0 && (
+            <div className={`${styles.statCard} ${styles.statCardGodkendelse}`}>
+              <p className={styles.statLabel}>Afventer godkendelse</p>
+              <p className={styles.statNum}>{counts.Godkendelser}</p>
+            </div>
+          )}
         </div>
 
         <div className={styles.sidebarUser}>
@@ -138,6 +196,7 @@ export default function AdminPage() {
               </tr>
             </thead>
             <tbody>
+              {/* tre mulige tilstande - loading viser en besked, ingen resultater viser en tom-besked, og ellers mappes de filtrerede partnere til tabelrækker. colSpan={6} sørger for at celleækken strækker sig over alle kolonner */}
               {loading ? (
                 <tr>
                   <td colSpan={6} className={styles.loading}>
@@ -154,7 +213,21 @@ export default function AdminPage() {
                 filtered.map((p) => (
                   <tr key={p.id} className={styles.tableRow}>
                     <td>
-                      <p className={styles.partnerName}>{p.virksomhedsnavn}</p>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                        }}
+                      >
+                        <p className={styles.partnerName}>
+                          {p.virksomhedsnavn}
+                        </p>
+                        {/* viser et orange "Afventer" badge ved siden af partnernavnet hvis partnerens id eksisterer i godkendelser-objektet */}
+                        {godkendelser[p.id] && (
+                          <span className={styles.afventerBadge}>Afventer</span>
+                        )}
+                      </div>
                       <p className={styles.partnerEmail}>
                         <Image
                           src="/icons/email.svg"
@@ -175,6 +248,7 @@ export default function AdminPage() {
                       </div>
                     </td>
                     <td>
+                      {/* status-badget kombinerer en generel badge-klasse med en farve-klasse fra status_colors objekter. ?? "" giver en tom streng som fallback hvis statussen ikke har en defineret farve. Den lille statusDot span er den farvede prik foran statusteksten */}
                       <span
                         className={`${styles.statusBadge} ${status_colors[p.status] ?? ""}`}
                       >
@@ -183,6 +257,7 @@ export default function AdminPage() {
                       </span>
                     </td>
                     <td>
+                      {/* kundecase-badget kombinerer en generel badge-klasse med en farve-klasse fra kundecase_colors objekter. ?? "" giver en tom streng som fallback hvis kundecase ikke har en defineret farve */}
                       <span
                         className={`${styles.kundecaseBadge} ${kundecase_colors[p.forsteKundecase] ?? ""}`}
                       >

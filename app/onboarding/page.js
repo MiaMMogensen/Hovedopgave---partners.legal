@@ -1,4 +1,4 @@
-"use client";
+"use client"; /* klientkomponent der bruger tre hooks - useState til state, useRef til filupload-inputtet og useEffect til bekræftelsesdialigen */
 
 import { useState, useRef, useEffect } from "react";
 import Image from "next/image";
@@ -6,8 +6,10 @@ import { db } from "@/app/firebaseConfig";
 import { ref, push } from "firebase/database";
 import styles from "./page.module.css";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation"; /* bruges til at navigere programmatisk i bekræftelsesdialogen */
 
+/* array med de fem trin brugt til at generere progress-indikatoren */
+/* defineret udenfor komponenten så de kun oprettes én gang */
 const TRIN = [
   { num: 1, label: "Virksomhed" },
   { num: 2, label: "Kontakt" },
@@ -100,6 +102,8 @@ const ydelser_suggestions = [
   "Kontraktstyring",
 ];
 
+/* et mapping-objekt der forbinder hvert ekspertiseområde med relevante ydelser */
+/* når partneren vælger et ekspertiseområde bruges dette objekt til automatisk at foreslå relevante ydelser. Det sikrer ensartede data på tværs af alle partnere */
 const ekspertise_ydelser = {
   GDPR: [
     "GDPR gap-analyse",
@@ -201,6 +205,8 @@ const ekspertise_ydelser = {
   ],
 };
 
+/* et objekt med tooltip-indhold per trin */
+/* nøglerne er trinnumre og værdierne er arrays af tip-objekter */
 const tips = {
   1: [
     {
@@ -252,6 +258,7 @@ const tips = {
   ],
 };
 
+/* tips_titles er et separat objekt med overskriften for hvert trins tooltip */
 const tips_titles = {
   1: "Hvad skal du bruge?",
   2: "Hvem skal kontaktes?",
@@ -259,6 +266,8 @@ const tips_titles = {
   4: "Hvorfor certificeringer?",
 };
 
+/* en genanvendelig dropdown-komponent med en lokal open state */
+/* single = false er en default prop-værdi - hvis single ikke angives er den false og dropdown tillader multiple valg */
 function MultiSelectDropdown({
   label,
   options,
@@ -268,6 +277,7 @@ function MultiSelectDropdown({
 }) {
   const [open, setOpen] = useState(false);
 
+  /* toggle håndterer to tilstande. Hvis single er true vælges kun ét element og dropdown lukkes. Hvis false tjekkes om elementet allerede er valgt - hvis ja fjernes det med .filter(), hvis nej tilføjes det med spread-operatoren */
   function toggle(option) {
     if (single) {
       onChange([option]);
@@ -281,12 +291,17 @@ function MultiSelectDropdown({
     }
   }
 
+  /* knappen viser enten placeholder-tekst eller de valgte værdier joined med komma */
+  /* dropdown listen vises kun når open er true */
+  /* hvert option er en label med en checkbox - det gør at hele labelområdet er klikbart */
+  /* checked={selected.includes(opt)} binder checkboxen til state */
   return (
     <div className={styles.dropdownWrap}>
       <button
         type="button"
         className={`${styles.dropdownBtn} ${open ? styles.dropdownBtnOpen : ""}`}
         onClick={() => setOpen((p) => !p)}
+        /* toggle til at åbne og lukke dropdown */
       >
         <span className={styles.dropdownBtnText}>
           {selected.length === 0
@@ -299,6 +314,7 @@ function MultiSelectDropdown({
           ›
         </span>
       </button>
+      {/* hvis dropdown er åben loopes over alle mulige valg og der laves en liste */}
       {open && (
         <div className={styles.dropdownList}>
           {options.map((opt) => (
@@ -318,9 +334,17 @@ function MultiSelectDropdown({
   );
 }
 
+/* suggestions beregnes direkte fra query - ikke i useMemo fordi den er simpel nok */
+/* den filtrerer ydelser_suggestions til dem der indeholder søgeteksten og ikke allerede er valgt via !value.includes(s) */
+/* komponenten modtager to props, value er det nuværende array af tilføjede ydelser og onChange er en callback funktion der kaldes når arrayet skal opdateres */
 function ChipInput({ value, onChange }) {
   const [query, setQuery] = useState("");
+  /* state til søgeteksten i inputfeltet */
 
+  /* beregner forslag baseret på søgeteksten */
+  /* hvis søgefeltet er tomt er suggestions et tomt array */
+  /* hvis der er søgetekst filtreres ydelser_suggestions arrayet */
+  /* den filtrerer ydelser_suggestions til dem der indeholder søgeteksten og ikke allerede er valgt via !value.includes(s) */
   const suggestions = query
     ? ydelser_suggestions.filter(
         (s) =>
@@ -328,15 +352,20 @@ function ChipInput({ value, onChange }) {
       )
     : [];
 
+  /* add tilføjer et element til listen af ydelser hvis det ikke allerede er der og rydder søgefeltet */
+  /* if (!value.includes(item)) tjekker om elementet ikke allerede er i listen — så der ikke kommer dubletter */
+  /* onChange([...value, item]) kalder onChange callback-funktionen med et nyt array der indeholder alle de eksisterende ydelser spredt ud med ...value og det nye element item tilføjet til sidst */
   function add(item) {
     if (!value.includes(item)) onChange([...value, item]);
     setQuery("");
   }
 
+  /* remove filtrerer elementet fra listen */
   function remove(item) {
     onChange(value.filter((v) => v !== item));
   }
 
+  /* handleKeyDown lytter efter Enter-tasten - e.preventDefault() forhindrer formularindsendelse ved Enter */
   function handleKeyDown(e) {
     if (e.key === "Enter" && query.trim()) {
       e.preventDefault();
@@ -356,8 +385,10 @@ function ChipInput({ value, onChange }) {
           className={`${styles.chipSearchInput} ${suggestions.length > 0 ? styles.chipSearchInputOpen : ""}`}
           autoComplete="off"
         />
+        {/* forslagslisten vises kun hvis der er mindst ét forslag */}
         {suggestions.length > 0 && (
           <div className={styles.chipSuggestions}>
+            {/* looper over forslagene og laver en knap for hvert. Når brugeren klikker på et forslag kaldes add(s) som tilføjer det til listen */}
             {suggestions.map((s) => (
               <button
                 key={s}
@@ -371,8 +402,10 @@ function ChipInput({ value, onChange }) {
           </div>
         )}
       </div>
+      {/* chip rækken med de tilføjede ydelser vises kun hvis der er mindst én ydelse i listen */}
       {value.length > 0 && (
         <div className={styles.chipsRow}>
+          {/* looper over de tilføjede ydelser og laver en chip for hver */}
           {value.map((v) => (
             <span key={v} className={styles.chip}>
               {v}
@@ -380,6 +413,7 @@ function ChipInput({ value, onChange }) {
                 type="button"
                 className={styles.chipRemove}
                 onClick={() => remove(v)}
+                /* kalder remove funktionen med ydelsens navn når brugeren klikker x som filterer ydelsen fra listen */
               >
                 ×
               </button>
@@ -392,23 +426,39 @@ function ChipInput({ value, onChange }) {
 }
 
 export default function OnboardingPage() {
+  /* fire state-variabler */
   const [aktivtTrin, setAktivtTrin] = useState(1);
-  const [showTip, setShowTip] = useState(false);
+  /* styrer hvilket trin der vises */
+  const [showTip, setShowTip] = useState(false); /* styrer tooltip visning */
   const [submitted, setSubmitted] = useState(false);
+  /* bruges til at vise bekræftelsessiden og deaktivere bekræftelsesdialogen efter indsendelse */
   const [trinErrors, setTrinErrors] = useState({});
+  /* et objekt med fejlbeskeder per felt */
   const router = useRouter();
 
+  /* første useEffect håndterer hvad der sker når brugeren forsøger at forlade siden - lukke fanen, genindlæse siden eller navigere til en ekstern URL */
+  /* e.returnValue = "" er nødvendigt i nogle browsere for at triggere dialogen */
+  /* kører kun igen når aktivtTrin eller submitted ændrer sig */
   useEffect(() => {
+    /* funktion der kører lige inden siden forlades */
     const handleBeforeUnload = (e) => {
+      /* dialogen vises kun hvis brugeren er kommet forbi trin 1 og ikke allerede har indsendt formularen */
       if (aktivtTrin > 1 && !submitted) {
         e.preventDefault();
+        /* forhindrer siden i at forlade med det samme */
         e.returnValue = "";
       }
     };
     window.addEventListener("beforeunload", handleBeforeUnload);
+    /* tilføjer lytteren på hele vinduet så den fanger alle forsøg på at forlade siden */
     return () => window.removeEventListener("beforeunload", handleBeforeUnload);
+    /* cleanup funktionen der fjernet lytteren når komponenten unmountes så den ikke fortsætter med at køre i baggrunden */
   }, [aktivtTrin, submitted]);
 
+  /* anden useEffect håndterer Next.js intern navigation via Links */
+  /* e.target.closest("a") finder det nærmeste <a> element fra det klikkede element - det fungerer selv om brugeren klikker på et ikon inde i et link */
+  /* href.startsWith("#") ekskluderer ankerlinks */
+  /* true som tredjse argument til addEventListener bruger capture-fasen - det betyder eventet fanges inden det når linket og man kan forhindre navigation */
   useEffect(() => {
     if (aktivtTrin === 1 || submitted) return;
 
@@ -429,6 +479,8 @@ export default function OnboardingPage() {
     return () => document.removeEventListener("click", handleClick, true);
   }, [aktivtTrin, submitted, router]);
 
+  /* et samlet state-objekt med alle formularfelter */
+  /* arrays initialiseres som tomme arrays frem for strings */
   const [data, setData] = useState({
     virksomhedsnavn: "",
     vat: "",
@@ -454,12 +506,18 @@ export default function OnboardingPage() {
     dokumenter: [],
   });
 
+  /* en ref til det skjulte fil-input - bruges til at trigge filvalg programmatisk når brugeren klikker på upload-området */
   const docInputRef = useRef(null);
 
+  /* en hjælpefunktion der opdaterer et enkelt felt i data-objektet via computed property syntax */
+  /* ...prev bevarer alle øvrige felter uændret */
   function update(field, value) {
     setData((prev) => ({ ...prev, [field]: value }));
   }
 
+  /* Array.from(e.target.files) konverterer FileList - et browser-specifikt objekt - til et almindeligt JavaScript-array */
+  /* de nye filer spredes ind i det ekisterende dokumenter array */
+  /* docInputRef.current.value = "" nulstiller fil-inputtet så den samme fil kan vælges igen */
   function handleDocUpload(e) {
     const files = Array.from(e.target.files);
     setData((prev) => ({
@@ -469,9 +527,14 @@ export default function OnboardingPage() {
     docInputRef.current.value = "";
   }
 
+  /* validering er opdelt per trin */
   function validerOgGåVidere(næsteTrin) {
     const errors = {};
 
+    /* trin 1 validerer virksomhedsnavn og VAT */
+    /* regex til VAT - ^[A-Z]{0,2} tillader op til to store bogstaver i starten fx DK */
+    /* \d{6,12}$ kæver 6-12 cifre */
+    /* .replace(/\s/g, "") fjerne alle mellemrum inden validering så "DK 12 34 56 78" og "DK12345678" begge er gyldige */
     if (aktivtTrin === 1) {
       if (!data.virksomhedsnavn.trim()) {
         errors.virksomhedsnavn = "Udfyld virksomhedsnavnet";
@@ -505,6 +568,8 @@ export default function OnboardingPage() {
       }
     }
 
+    /* trin 3 validerer arrays ved at tjekke .length - et tomt array har length 0 hvilket er falsy */
+    /* beskrivelsen valideres for minimumslængde på 20 tegn */
     if (aktivtTrin === 3) {
       if (!data.ekspertise.length)
         errors.ekspertise = "Vælg mindst ét ekspertiseområde";
@@ -518,6 +583,8 @@ export default function OnboardingPage() {
       }
     }
 
+    /* hvis der er fejl sættes de i state og funktionen stoppes */
+    /* ellers ryddes alle fejl og det næste trin aktiveres */
     if (Object.keys(errors).length > 0) {
       setTrinErrors(errors);
       return;
@@ -526,6 +593,12 @@ export default function OnboardingPage() {
     setAktivtTrin(næsteTrin);
   }
 
+  /* push opretter automatisk et unikt id for partneren i Firebase frem for set der kræver et manuelt id */
+  /* kontaktoplysninger gemmes som et nested objekt */
+  /* certificeringer kombineres med fritekst via spread-operatoren - data.andreCertificeringer ? [data.andreCertificeringer] : [] konverterer fritekststrengen til et array hvis den er udfyldt, ellers spredes et tomt array */
+  /* systemfelter som status, featured, kompetencer og oprettetTimestamp tilføjes automatisk uden brugerinput */
+  /* oprettet formateres som en læsbar streng via toLocaleDateString */
+  /* setSubmitted(true) skifter til bekræftelsessiden */
   async function handleSubmit() {
     try {
       const partnerRef = ref(db, "partners");
@@ -569,6 +642,7 @@ export default function OnboardingPage() {
     }
   }
 
+  /* bekræftelsessiden */
   if (submitted) {
     return (
       <main>
@@ -721,6 +795,7 @@ export default function OnboardingPage() {
           </p>
 
           {/* Progress indikator */}
+          {/* progress-cirklen har tre tilstande styret af to ternære operatorer. Aktiv - det nuværende trin. Done - et tidligere trin. Default - et fremtidigt trin. Når et trin er gennemført vises et SVG flueben frem for trinnummeret */}
           <div className={styles.progressWrap}>
             {TRIN.map((trin, index) => (
               <div key={trin.num} className={styles.progressItem}>
@@ -753,6 +828,7 @@ export default function OnboardingPage() {
                     {trin.label}
                   </span>
                 </div>
+                {/* stregen mellem trin vises kun hvis det ikke er det sidste trin - index < TRIN.length - 1 */}
                 {index < TRIN.length - 1 && (
                   <div
                     className={`${styles.progressLine} ${aktivtTrin > trin.num ? styles.progressLineDone : ""}`}
@@ -769,6 +845,9 @@ export default function OnboardingPage() {
         <div className={styles.inner}>
           <div className={styles.formCard}>
             {/* Spørgsmålstegn tooltip */}
+            {/* tooltip vises kun på trin 1-4 - aktivtTrin < 5 */}
+            {/* onMouseEnter og onMouseLeave styrer visningen */}
+            {/* tips[aktivtTrin] henter tips for det aktuelle trin fra tips-objektet ved hjælp af trinnumeret som nøgle */}
             {aktivtTrin < 5 && (
               <div className={styles.tipWrap}>
                 <button
@@ -816,6 +895,9 @@ export default function OnboardingPage() {
                     <label className={styles.label}>
                       Virksomhedsnavn <span className={styles.req}>*</span>
                     </label>
+                    {/* onChange kører hver gang brugeren skriver noget i feltet */}
+                    {/* update kalder update hjælpefunktionen med feltnavnet og den nye værdi - opdaterer virksomhedsnavn i data state objektet */}
+                    {/* setTrinErrors rydder fejlbeskeden for virksomhedsnavn. ...prev bevarer alle øvrige fejlbeskeder uændret, kun virksomhedsnavn sættes til undefined */}
                     <input
                       type="text"
                       value={data.virksomhedsnavn}
@@ -1062,6 +1144,8 @@ export default function OnboardingPage() {
                       Primært ekspertiseområde{" "}
                       <span className={styles.req}>*</span>
                     </label>
+                    {/* onChange gør tre ting. Opdaterer ekspertise via update. Rydder fejlbeskeden. Henter de foreslåede ydelser fra ekspertise_ydelser mappingen med v[0] - det første valgte element */}
+                    {/* ?? [] giver et tomt array som fallback. setData opdaterer både ekspertise og ydelser i én operation - .filter(y) => !prev.ydelser.includes(y)) sikrer at ingen ydelser tilføjes to gange */}
                     <MultiSelectDropdown
                       label="Ekspertiseområde"
                       options={ekspertise_options}
@@ -1236,15 +1320,19 @@ export default function OnboardingPage() {
                 >
                   <label className={styles.label}>Certificeringer</label>
                   <div className={styles.certGrid}>
+                    {/* looper over alle mulige certificeringer og laver en checkboks for hver */}
                     {certificering_options.map((cert) => (
                       <label key={cert} className={styles.checkLabel}>
                         <input
                           type="checkbox"
                           checked={data.certificeringer.includes(cert)}
+                          /* binder checkboksen til state - checkboksen er markeret hvis certificeringen allerede er i data.certificeringer arrayet */
                           onChange={() => {
                             const current = data.certificeringer;
+                            /* gemmer det nuværende certificeringer-array i en variabel så jeg kan arbejde med det */
                             update(
                               "certificeringer",
+                              /* en ternær operator der enten fjerner eller tilføjer certificeringen */
                               current.includes(cert)
                                 ? current.filter((c) => c !== cert)
                                 : [...current, cert],
@@ -1283,6 +1371,10 @@ export default function OnboardingPage() {
                   <p className={styles.fieldHint}>
                     Upload certifikater eller anden dokumentation
                   </p>
+                  {/* upload-området er en synlig div der ved klik programmatisk klikker på det skjulte fil-input via docInputRef.current?.click() */}
+                  {/* ?. er optional chaining der undgår fejl hvis ref ikke er sat endnu */}
+                  {/* multiple tillader valg af flere filet */}
+                  {/* accept=".pdf,image/*" begrænser filtyper til PDF og billeder */}
                   <div
                     className={styles.uploadArea}
                     onClick={() => docInputRef.current?.click()}
@@ -1319,6 +1411,8 @@ export default function OnboardingPage() {
                               {doc.type.split("/")[1].toUpperCase()}
                             </p>
                           </div>
+                          {/* slet-knappen filterer dokumentet fra ved at sammenligne indekset j med det aktuelle indeks i */}
+                          {/* _ er konventionen for en parameter der ikke bruges - her er det selve dokumentet som vi ikke behøver */}
                           <button
                             type="button"
                             className={styles.docSlet}
@@ -1506,6 +1600,7 @@ export default function OnboardingPage() {
                 </div>
                 <div className={styles.summarySection}>
                   <div className={styles.summaryGrid}>
+                    {/* certificeringer kombineres igen med fritekstfelter via spread og joines til en kommasepareret streng */}
                     {[
                       {
                         label: "Certificeringer",
@@ -1519,6 +1614,9 @@ export default function OnboardingPage() {
                       {
                         label: "Dokumenter",
                         value: data.dokumenter.map((d) => d.name).join(", "),
+                      },
+                      {
+                        /* row.value && (...) viser kun rækken hvis der er en værdi - tomme felter vises ikke i opsummeringen */
                       },
                     ].map(
                       (row) =>

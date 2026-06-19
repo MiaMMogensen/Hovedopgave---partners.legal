@@ -1,7 +1,11 @@
+/* layout og variabler */
+/* definerer to CSS-variabler der bruges på tværs af hele siden */
 .layout {
   --admin-sidebar-width: 260px;
   --admin-header-height: 90px;
-  min-height: calc(100vh - var(--admin-header-height));
+  min-height: calc(
+    100vh - var(--admin-header-height)
+  ); /* sikrer at siden fylder hele skærmhøjden minus headeren */
 }
 
 .loading {
@@ -12,6 +16,7 @@
 }
 
 /* sidebar */
+/* sidebaren er fixed. Den følger med når man scroller. Den starter præcis under headeren og fylder resten af skærmhøjden */
 .sidebar {
   background: var(--white);
   border-right: 1px solid #e2e8f0;
@@ -93,10 +98,12 @@
   margin-top: 2px;
 }
 
-/* main */
+/* main/hovedinhold */
 .main {
   background: linear-gradient(180deg, #d2d8fd 0%, #ffffff 100%);
-  margin-left: var(--admin-sidebar-width);
+  margin-left: var(
+    --admin-sidebar-width
+  ); /* margin-left på 260px sikrer at indholdet ikke overlapper sidebaren */
   min-height: calc(100vh - var(--admin-header-height));
   padding: 40px 80px;
 }
@@ -127,6 +134,7 @@
 }
 
 /* grid */
+/* siden er opdelt i to kolonner. Venstre kolonne fylder al tilfængelig plads og højre kolonne er fast 500px bred */
 .grid {
   display: grid;
   grid-template-columns: 1fr 500px;
@@ -144,7 +152,7 @@
   display: flex;
   flex-direction: column;
   gap: 50px;
-  position: sticky;
+  position: sticky; /* gør at status, kundecase og kompetencer kortene følger med når man scroller så admin altid har adgang til dem */
   top: 40px;
 }
 
@@ -249,6 +257,15 @@
   flex-shrink: 0;
 }
 
+.selectLabelGodkendelse {
+  font-size: 14px;
+  color: var(--darkblue);
+  white-space: nowrap;
+  flex-shrink: 0;
+  margin-left: 25px;
+  margin-top: 12px;
+}
+
 .select {
   flex: 1;
   border: 1.5px solid #e2e8f0;
@@ -314,6 +331,7 @@
   margin: 25px;
 }
 
+/* knapperne skifter visuelt udseende når de er aktive for at give klar feedback til admin om hvilke kompetencer der er valgt. Dette gøres ved at ændre baggrundsfarve, border-farve og tekstfarve på den aktive knap for at skabe en tydelig kontrast til de inaktive knapper og dermed forbedre brugeroplevelsen */
 .kompetenceBtn {
   padding: 8px 14px;
   border-radius: 100px;
@@ -344,6 +362,7 @@
   padding: 14px 16px;
 }
 
+/* hvert stat-kort har sin egen baggrundsfarve og tilhørende tekstfarver defineret via child-selektorer som .statCardAktivering .statLabel og .statCardAktivering .statNum for at sikre at farverne altid matcher korrekt og er lette at vedligeholde */
 .statCardAktivering {
   background: #fefce8;
 }

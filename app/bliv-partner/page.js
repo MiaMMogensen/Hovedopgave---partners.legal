@@ -1,13 +1,18 @@
+/* siden renderes på serverens som en Server Component. Det er muligt fordi der ikke bruges React hooks eller interaktivitet */
+
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./page.module.css";
 
+/* et array med tre statistikker der vises i hero-sektionen. Defineret uden for komponenten så de kun oprettes én gang */
 const stats = [
   { tal: "7+", tekst: "Aktive partnere" },
   { tal: "5 hverdage", tekst: "Fra oprettelse til live profil" },
   { tal: "100%", tekst: "Verificerede partnere" },
 ];
 
+/* et array med fire fordele-kort. Hvert objekt indeholder en ikon-sti, en titel og en beskrivelse */
+/* ved at definere indholdet som data frem for direkte i JSX er det nemmere at tilføje eller ændre fordele uden at røre i selve komponentstrukturen */
 const fordele = [
   {
     icon: "/icons/fordele1.svg",
@@ -35,6 +40,7 @@ const fordele = [
   },
 ];
 
+/* et array med tre procestrin. num er en streng frem for et tal fordi det vises direkte i UI'et som tekst */
 const proces_trin = [
   {
     num: "1",
@@ -63,8 +69,8 @@ export default function BlivPartnerPage() {
       <section className={styles.hero}>
         <Image
           src="/img/hero-circles.svg"
-          alt=""
-          fill
+          alt="" /* er en tom alt-tekst fordi billedet er rent dekorativt og ikke tilføjer information for skærmlæsere */
+          fill /* fill på Image-komponenten gør at billeder fylder hele sin forælders dimensioner */
           className={styles.ctaBg}
         />
         <div className={styles.heroInner}>
@@ -79,6 +85,7 @@ export default function BlivPartnerPage() {
           <Link href="/book-mode" className={styles.heroCta}>
             Book et møde
           </Link>
+          {/* stats-arrayet mappes til tre statistik-elementer. key={s.tal} bruges som unik nøgle da tallene er unikke i dette array */}
           <div className={styles.statsGrid}>
             {stats.map((s) => (
               <div key={s.tal} className={styles.statItem}>
@@ -91,6 +98,7 @@ export default function BlivPartnerPage() {
       </section>
 
       {/* fordele */}
+      {/* id="fordele" gør det muligt at linke direkte til denne sektion med et anker-link */}
       <section id="fordele" className={styles.section}>
         <div className={styles.inner}>
           <p className={styles.catLabel}>Fordele</p>
@@ -99,6 +107,7 @@ export default function BlivPartnerPage() {
             Som .legal-partner får du adgang til en række fordele der hjælper
             dig med at vækste din forretning.
           </p>
+          {/* fordele-arrayet mappes til fire kort. Hvert kort har et ikon og en tekstdel ved siden af hinanden. key={f.title} bruges som en unik nøgle da titlerne er unikke */}
           <div className={styles.fordeleGrid}>
             {fordele.map((f) => (
               <div key={f.title} className={styles.fordeleCard}>
@@ -116,6 +125,7 @@ export default function BlivPartnerPage() {
       </section>
 
       {/* proces */}
+      {/* bruger template literals til at kombinere to CSS-klasser - den generelle sektion-klasse og en lysegrå baggrunds-klasse */}
       <section className={`${styles.section} ${styles.bgLight}`}>
         <div className={styles.inner}>
           <p className={styles.catLabel}>Processen</p>
@@ -123,13 +133,16 @@ export default function BlivPartnerPage() {
           <p className={styles.sectionDesc}>
             Fra første kontakt til aktiv partner på tre enkle trin.
           </p>
+          {/*.map() tager her to parametre. trin er det aktuelle objekt og index er dets position i arrayet */}
           <div className={styles.procesWrap}>
             {proces_trin.map((trin, index) => (
               <div key={trin.num} className={styles.procesItem}>
                 {/* Streg og cirkel */}
+                {/* data-first={index === 0} sætter et data-attribut til true på det første element og false på det øvrige - det bruges i CSS til at skjule stregen til venstre for det første trin */}
                 <div className={styles.procesTop}>
                   <div className={styles.procesLine} data-first={index === 0} />
                   <div className={styles.procesCircle}>{trin.num}</div>
+                  {/* data-last{index === proces_trin.length - 1} gør det samme for sidste trin - proces_trin.length - 1 er indekset for det sidste element i arrayet */}
                   <div
                     className={styles.procesLine}
                     data-last={index === proces_trin.length - 1}
@@ -147,6 +160,7 @@ export default function BlivPartnerPage() {
       </section>
 
       {/* cta sektion */}
+      {/* en afsluttende sektion med et baggrundsbillede og en opfordring til handling */}
       <section className={styles.ctaSection}>
         <Image src="/img/bg-vector1.svg" alt="" fill className={styles.ctaBg} />
         <div className={styles.ctaInner}>

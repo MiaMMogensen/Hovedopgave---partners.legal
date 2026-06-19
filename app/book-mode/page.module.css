@@ -59,7 +59,7 @@
 }
 
 .fullWidth {
-  grid-column: 1 / -1;
+  grid-column: 1 / -1; /* strækker et felt over begge kolonner - -1 betyder den sidste kolonnelinje uanset hvor mange kolonner der er */
 }
 
 .formGroup {

@@ -2,7 +2,7 @@
 .hero {
   background: linear-gradient(180deg, #d4e7f6 0%, #ffffff 100%);
   padding: 130px 200px;
-  position: relative;
+  position: relative; /* nødvendig fordi baggrundsbilledet (cirklerne) er position: absolute og skal placeres relativt til hero-sektionen */
   text-align: center;
 }
 
@@ -177,6 +177,7 @@
 }
 
 /* Skjul venstre streg på første og højre streg på sidste */
+/* disse er attribut-selektorer det målretter streger med specifikke data-attributter */
 .procesLine[data-first="true"] {
   background: transparent;
 }

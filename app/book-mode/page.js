@@ -1,10 +1,12 @@
-"use client";
+"use client"; /* siden er en klientkomponent fordi den bruger React hooks og håndterer brugerinteraktion */
 
 import { useState } from "react";
 import styles from "./page.module.css";
 import Link from "next/link";
 
 export default function AnsøgPage() {
+  /* et enkelt state objekt der indeholder alle formularfelter. Det er en fordel frem for separate state-variabler per felt fordi det gør det nemmere at sende alle data salet til API'et */
+  /* alle felter initialiseres som tomme strenge */
   const [form, setForm] = useState({
     navn: "",
     virksomhed: "",
@@ -12,18 +14,26 @@ export default function AnsøgPage() {
     mail: "",
     region: "",
   });
-  const [status, setStatus] = useState(null);
 
+  /* status kan være null, "loading", "success" eller "error" og styrer hvad der vises i UI'et */
+  const [status, setStatus] = useState(null);
+  /* errors et et objekt der indeholder fejlbeskeder per felt */
   const [errors, setErrors] = useState({});
 
+  /* opdaterer det relevante felt i form-objektet baseret på inputfeltets name attribut */
+  /* [e.target.name] er computed propety syntax - det bruger værdien af e.target.name som nøgle i objektet */
+  /* ...prev bevarer alle øvrige felter uændret. Samtidig ryddes fejlbeskeden for det pågældende felt ved at sætte den til undefines - det giver brugeren øjeblikkelig feedback når de begynder at rette en fejl */
   function handleChange(e) {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     setErrors((prev) => ({ ...prev, [e.target.name]: undefined }));
   }
 
+  /* e.preventDefault() forhindrer browserens standard formularindsendelse der ville genindlæse siden */
   async function handleSubmit(e) {
     e.preventDefault();
 
+    /* validerer navn i to trin. Første if tjekker om feltet er tomt - .trim() fjerner whitespace så et felt med kun mellemrum betragtes som tomt */
+    /* else if tjekker om der er mindst to ord via .split(" ").length < 2 - det kræver både fornavn og efternavn */
     const newErrors = {};
 
     if (!form.navn.trim()) {
@@ -38,26 +48,38 @@ export default function AnsøgPage() {
       newErrors.virksomhed = "Virksomhedsnavnet er for kort";
     }
 
+    /* validerer telefonnummer med regex */
+    /* ^\+? betyder at strengen må starte med et valgfrit plustegn */
+    /* [\d\s\-]{8,}$ betyder mindst 8 tegn der er cifre /d. mellemrum /s eller bindestreger /-. */
+    /* det tillader formater som +45 12 34 56 78 og 12345678 */
     if (!form.telefon.trim()) {
       newErrors.telefon = "Udfyld dit telefonnummer";
     } else if (!/^\+?[\d\s\-]{8,}$/.test(form.telefon.trim())) {
       newErrors.telefon = "Indtast et gyldigt telefonnummer";
     }
 
+    /* validerer email med regex */
     if (!form.mail.trim()) {
       newErrors.mail = "Udfyld din arbejdsmail";
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.mail.trim())) {
       newErrors.mail = "Indtast en gyldig mailadresse";
     }
 
+    /* hvis der er fejl sættes error state til det nye fejlobjekt og funktionen stoppes */
+    /* return er vigtigt - uden det ville koden fortsætte og forsøge at sende formularen */
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       return;
     }
 
+    /* rydder fejl og sætter status til "loading" så knappen viser "Sender..." og er deaktiveret */
     setErrors({});
     setStatus("loading");
 
+    /* fetch sender en POST-request til API-routen med formulardata som JSON */
+    /* JSON-stringify(form) konverterer form-objektet til en JSON-streng */
+    /* res.ok er true hvis HTTP-statuskoden er 200-299 */
+    /* try/catch fanger netværksfejl der opstår hvis requesten slet ikke kan sendes, fx hvis brugeren er offline */
     try {
       const res = await fetch("/api/send-onboarding", {
         method: "POST",
@@ -73,6 +95,7 @@ export default function AnsøgPage() {
 
   return (
     <main>
+      {/* hero-sektionen skjules når formularen er indsent succesfuldt */}
       {status !== "success" && (
         <>
           {/* hero */}
@@ -93,6 +116,7 @@ export default function AnsøgPage() {
       )}
 
       {/* formular */}
+      {/* sektionens CSS-klasse skifter baseret på status - det giver mulighed for at style formularen og bekræftelsessiden forskelligt */}
       <section
         className={
           status === "success" ? styles.formSectionSuccess : styles.formSection
@@ -100,6 +124,7 @@ export default function AnsøgPage() {
       >
         <div className={styles.inner}>
           <div className={styles.formCard}>
+            {/* den ternære operator viser enten bekræftelsessiden eller formularen baseret på status */}
             {status === "success" ? (
               <div className={styles.successWrap}>
                 <div className={styles.successIcon}>
@@ -122,6 +147,7 @@ export default function AnsøgPage() {
                 <p className={styles.nextStepsLabel}>Hvad sker der nu?</p>
                 <div className={styles.nextSteps}>
                   {[
+                    /* procestrinene er defineret inline som et array direkte i JSX og mappes til trin-elementer */
                     {
                       num: "✓",
                       done: true,
@@ -152,6 +178,7 @@ export default function AnsøgPage() {
                     },
                   ].map((step) => (
                     <div key={step.num} className={styles.nextStep}>
+                      {/* CSS-klassen bestemmes af en nested ternær operator - hvis step.done er true bruges stepCircleDone, hvis step.active er true bruges stepCircleActive, ellers ingen ekstra klasse */}
                       <div
                         className={`${styles.stepCircle} ${step.done ? styles.stepCircleDone : step.active ? styles.stepCircleActive : ""}`}
                       >
@@ -176,6 +203,8 @@ export default function AnsøgPage() {
                   <p className={styles.oplysningerTitle}>Dine oplysninger</p>
                   <table className={styles.oplysningerTable}>
                     <tbody>
+                      {/* viser brugerens indtastede oplysninger i en tabel */}
+                      {/* ...(form.region ? [...] : []) er conditional spread - hvis region er udfyld spredes det ind i arrayet, ellers spredes et tomt array ind */}
                       {[
                         { label: "Navn", value: form.navn },
                         { label: "Virksomhed", value: form.virksomhed },
@@ -211,6 +240,7 @@ export default function AnsøgPage() {
                 </div>
               </div>
             ) : (
+              /* noValidate på form-elementet deaktiverer browserens indbyggede validerens så min egen validering i handleSubmit bruges i stedet */
               <form onSubmit={handleSubmit} noValidate>
                 <div className={styles.formGrid}>
                   {/* Række 1 */}
@@ -218,6 +248,7 @@ export default function AnsøgPage() {
                     <label className={styles.label}>
                       Fulde navn <span className={styles.required}>*</span>
                     </label>
+                    {/* hvert inputfelt er kontrolleret — value={form.navn} binder feltet til state og onChange={handleChange} opdaterer state når brugeren skriver. name="navn" er det der gør at handleChange kan identificere hvilket felt der opdateres via e.target.name. CSS-klassen inputError tilføjes betinget hvis der er en fejl for det felt. Fejlbeskeden vises kun hvis errors.navn har en værdi.  */}
                     <input
                       type="text"
                       name="navn"
@@ -320,6 +351,7 @@ export default function AnsøgPage() {
                 </p>
 
                 <div className={styles.submitWrap}>
+                  {/* knappen er dekativeret mens formularen sendes via disabled={status === "loading"}. Teksten skifter dynamisk baseret på status */}
                   <button
                     type="submit"
                     className={styles.submitBtn}
