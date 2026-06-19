@@ -140,12 +140,12 @@
   border-radius: 20px;
   padding: 50px 50px 50px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  position: relative;
+  position: relative; /* nødvendigt fordi tooltip-knappen er absolut positioneret relativt til kortet */
 }
 
 /* tip */
 .tipWrap {
-  position: absolute;
+  position: absolute; /* tooltip-knappen er absolut positioneret i øverste højre hjørne af kortet */
   top: 42px;
   right: 42px;
 }
@@ -164,16 +164,16 @@
 }
 
 .tipBox {
-  position: absolute;
-  top: 40px;
-  right: 0;
+  position: absolute; /* tooltip-boksen er absolut positioneret relativt til knappen */
+  top: 40px; /* placerer den under knappen */
+  right: 0; /* justerer den til højre kant af knappen */
   background: var(--tag-background);
   color: var(--darkblue);
   padding: 20px;
   border-radius: 16px;
   border: 2px solid var(--purple);
   width: 350px;
-  z-index: 10;
+  z-index: 10; /* løfter den over alt andet indhold */
   display: flex;
   flex-direction: column;
   gap: 16px;
@@ -296,7 +296,7 @@
   color: var(--darkblue);
   background: var(--white);
   outline: none;
-  resize: vertical;
+  resize: vertical; /* tillader brugeren at ændre højden men ikke bredden */
   transition: border-color 0.2s;
 }
 
@@ -453,6 +453,7 @@
   transition: border-color 0.2s;
 }
 
+/* når dropdown er åben fjernes de nederste afrundede hjørner og bundkanten gøres transparent - det skaber en visuel sammenhæng med dropdown-listen der vises under */
 .dropdownBtnOpen {
   border-bottom-left-radius: 0;
   border-bottom-right-radius: 0;
@@ -480,16 +481,17 @@
 }
 
 .dropdownList {
-  position: absolute;
-  top: 98%;
+  position: absolute; /* listen er absolut positioneret så den overlapper indholder under - det er nødvendigt for at den ikke skubber layoutet */
+  top: 98%; /* placerer den næsten ved bundkanten af knappen - 98% frem for 100% for at undgå en synlig spalte */
   left: 0;
   right: 0;
   background: var(--white);
   border: 1.5px solid var(--purple);
   border-top: none;
-  border-radius: 0 0 12px 12px;
+  border-radius: 0 0 12px 12px; /* runder kun bunden */
   z-index: 20;
   overflow: hidden;
+  /* giver scrolling hvis der er mange valg */
   max-height: 190px;
   overflow-y: auto;
 }
@@ -514,7 +516,7 @@
 }
 
 .checkbox {
-  appearance: none;
+  appearance: none; /* fjerner browserens standard checkbox styling så jeg kan style den selv */
   -webkit-appearance: none;
   width: 16px;
   height: 16px;

@@ -1,13 +1,24 @@
 "use client";
 
-import { useState, useMemo, useRef, useEffect } from "react";
-import { useSearchParams, useRouter } from "next/navigation";
+import {
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react"; /* fire hooks fra React */
+import {
+  useSearchParams,
+  useRouter,
+} from "next/navigation"; /* useSearchParams til at læse URL-parametre og useRouter til at navigere programmatisk */
 import Link from "next/link";
 import Image from "next/image";
 import { usePartners } from "@/app/usePartners";
 import styles from "./page.module.css";
-import { Suspense } from "react";
+import { Suspense } from "react"; /* importeres fordi useSearchParams kræver at komponenten er pakket ind i en Suspense-grænse */
 
+/* et array af objekter der definerer alle filterkategorier */
+/* hvert objekt har en key der matcher feltet i partnerobjektet, en visningstlabel og et array af mulige værdier */
+/* ved at definere filtrene som data kan man nemt tilføje eller fjerne kategorier uden at ændre i filtreringslogikken */
 const filter_categories = [
   {
     key: "ekspertise",
@@ -104,6 +115,7 @@ const filter_categories = [
   },
 ];
 
+/* to sorteringsmuligheder. value bruges i logikken og label vises i UI'et */
 const sort_options = [
   { value: "nyeste", label: "Nyeste" },
   { value: "alfabetisk", label: "Alfabetisk" },
@@ -129,8 +141,10 @@ const how_to = [
   },
 ];
 
+/* en genanvendelig komponent der renderes én gang per filterkategori */
 function FilterGroup({ category, activeFilters, onToggle }) {
   const [isOpen, setIsOpen] = useState(true);
+  /* starter som true så alle filtergrupper er åbne som standard */
 
   return (
     <div className={styles.filterGroup}>
@@ -145,6 +159,7 @@ function FilterGroup({ category, activeFilters, onToggle }) {
         </span>
         <span className={styles.filterGroupLabel}>{category.label}</span>
       </button>
+      {/* {isOpen && (...)} skjuler options-listen når gruppen er lukket */}
       {isOpen && (
         <div className={styles.filterGroupOptions}>
           {category.options.map((option) => (
@@ -152,7 +167,9 @@ function FilterGroup({ category, activeFilters, onToggle }) {
               <input
                 type="checkbox"
                 checked={activeFilters.includes(option)}
+                /* activeFilters.includes(option) binder checkboxen til den aktive filter-state i forælderkomponenten */
                 onChange={() => onToggle(option)}
+                /* onToggle er en callback-funktion der kaldes med option-værdien - det er props-drilling frem for at håndtere state lokalt */
                 className={styles.checkbox}
               />
               {option}
@@ -166,33 +183,47 @@ function FilterGroup({ category, activeFilters, onToggle }) {
 
 function PartnersContent() {
   const searchParams = useSearchParams();
+  /* læser URL-parametre - ?q=GDPR giver urlQuery = "GDPR" */
   const router = useRouter();
 
   const { partners, loading } = usePartners();
 
+  /* søgeteksten initialiseres med URL-parameteret så siden kan linkes til med en forudvalgt søgning */
   const urlQuery = searchParams.get("q") || "";
   const [searchText, setSearchText] = useState(urlQuery);
 
+  /* useState med en initializer-funktion - den kører kun én gang ved mount frem for ved hver render */
+  /* hvis der er et URL-query forsøger den at matche det mod filter-options og forforudfylder de matchende filtre */
   const [activeFilters, setActiveFilters] = useState(() => {
+    /* opretter et tomt objekt der gradvist fyldes med filterkategorier */
     const initial = {};
+    /* opretter et tomt array for hver filterkategori, hvilket sikrer at alle kategorier eksisterer fra start */
     filter_categories.forEach((c) => {
       initial[c.key] = [];
     });
+    /* tjekker om der er et søgeord i URL'en */
     if (urlQuery) {
+      /* hvis der er et URL søgeord gennemgås alle filterkategorier og deres options filtreres efter om de indeholder søgeordet */
       filter_categories.forEach((c) => {
         const match = c.options.filter((o) =>
           o.toLowerCase().includes(urlQuery.toLowerCase()),
         );
+        /* hvis der er matches sættes de som aktive filtre */
         if (match.length) initial[c.key] = match;
       });
     }
+    /* returnerer det færdige filter objekt som startværdi for activeFilters state */
     return initial;
   });
 
   const [sortBy, setSortBy] = useState("nyeste");
   const [sortOpen, setSortOpen] = useState(false);
   const sortRef = useRef(null);
+  /* en ref der peger på sorterings-dropdown containeren */
 
+  /* useEffect lytter på klik på hele dokumentet og lukker dropdown hvis klikket sker uden for containeren */
+  /* sortRef.current.contains(e.target) tjekker om det klikkede element er et barn af dropdown-containeren */
+  /* cleanup-funktionen fjerner lytteren */
   useEffect(() => {
     function handleClickOutside(e) {
       if (sortRef.current && !sortRef.current.contains(e.target)) {
@@ -203,15 +234,26 @@ function PartnersContent() {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  /* konverterer det nestede filter-objekt til et fladt array af { key, value } objekter */
+  /* Object.entries giver [["ekspertise", ["GDPR]], ["branche", ["Finans"]]] */
   const allActiveFilters = Object.entries(activeFilters).flatMap(
+    /* .flatMap mapper hvert entry til et array af objekter og flader dem ud. Resultatet bruges til at vise de aktive filtre som chips og til at tjekke om der er aktive filtre */
     ([key, values]) => values.map((v) => ({ key, value: v })),
   );
 
+  /* tilføjer eller fjerner en filterværdi fra én specifik filterkategori */
+  /* opdaterer én filterkategori - tilføjer eller fjerner en option */
+  /* ...prev bevarer alle øvrige kategorier uændret */
+  /* [categoryKey] er computed property syntax der bruger kategorinøglen dynamisk */
   function toggleFilter(categoryKey, option) {
+    /* opdaterer filter state med en funktion der tager den nuværende state som prev - det sikrer at vi altid arbejder med den nyeste state */
     setActiveFilters((prev) => {
+      /* henter det nuværende array af aktive filtre for den specifikke kategori */
       const current = prev[categoryKey];
       return {
         ...prev,
+        /* computed propety syntax der opdaterer kun den specifikke kategori dynamisk */
+        /* den ternære operator tjekker om optionen allerede er aktiv - hvis ja filtreres den fra, hvis nej tilføjes den med spread operatoren */
         [categoryKey]: current.includes(option)
           ? current.filter((v) => v !== option)
           : [...current, option],
@@ -219,6 +261,7 @@ function PartnersContent() {
     });
   }
 
+  /* fjerner kun én specifik option fra én kategori - bruges når brugeren klikker x på et chip */
   function removeFilter(categoryKey, option) {
     setActiveFilters((prev) => ({
       ...prev,
@@ -226,6 +269,7 @@ function PartnersContent() {
     }));
   }
 
+  /* nulstiller alle filtre og søgetekst og fjerne URL-parametre via router-replace - replace frem for push så den ryddede tilstand ikke tilføjes til browser-historikken */
   function clearAll() {
     const empty = {};
     filter_categories.forEach((c) => {
@@ -236,11 +280,18 @@ function PartnersContent() {
     router.replace("/partnere");
   }
 
+  /* matchesText er true hvis søgefeltet er tomt eller søgeteksten matches i ét af fire felter */
+  /* .some() på arrays tjekker om mindst ét element matcher - det er effektivt fordi den stopper så snart den finder et match */
+  /* useMemo cacher filtreringsresultatet så det kun genberegnes når en af dependencies ændrer sig og ikke ved hver render */
   const filteredPartners = useMemo(() => {
+    /* filtrerer alle partnere og beholder kun dem der matcher både søgetekst og aktive filtre. let frem for const forsi result sorteres bagefter */
     let result = partners.filter((p) => {
+      /* !searchtext er true hvis søgefeltet er tomt, så vises alle partnere uden at tjekke de øvrige betingelser */
       const matchesText =
         !searchText ||
+        /* tjekker om søgeteksten findes i virksomhedsnavnet */
         p.virksomhedsnavn?.toLowerCase().includes(searchText.toLowerCase()) ||
+        /* tjekker om søgeteksten indeholder mindst ét element i ekspertise arrayet */
         p.ekspertise?.some((t) =>
           t.toLowerCase().includes(searchText.toLowerCase()),
         ) ||
@@ -248,23 +299,33 @@ function PartnersContent() {
           t.toLowerCase().includes(searchText.toLowerCase()),
         ) ||
         p.beskrivelse?.toLowerCase().includes(searchText.toLowerCase());
+      /* matchestext er true hvis bare ét af de fire filter matcher søgeteksten */
 
+      /* tjekker om partnern matcher alle aktive filterkategorier */
+      /* .every() returnerer kun true hvis alle kategorier returnerer true - én kategori der ikke matcher er nok til at partneren filtreres fra */
       const matchesFilters = filter_categories.every((cat) => {
+        /* henter de aktive filtre for den specifikke kategori */
         const active = activeFilters[cat.key];
+        /* hvis ingen filtre er aktive i denne kategori returneres true automatisk */
         if (!active || active.length === 0) return true;
+        /* henter partnerens værdier for den specifikke kategori med ?? [] som fallback hvis feltet ikke eksisterer */
         const partnerValues = p[cat.key] ?? [];
+        /* tjekker om partneren har mindst én af de valgte filterværdier. Partneren skal bare have én af de valgte værdier */
         return active.some((f) => partnerValues.includes(f));
       });
-
+      /* partneren vises kun hvis begge betingelser er opfyldt */
       return matchesText && matchesFilters;
     });
 
+    /* [...result] laver en kopi inden sorteringen - man må ikke mutere det originale array direkte */
+    /* .localeCompare håndterer dansk alfabetisk sortering korrekt - det tager hensyn til specialtegn som æ, ø, å */
     if (sortBy === "alfabetisk") {
       result = [...result].sort((a, b) =>
         a.virksomhedsnavn?.localeCompare(b.virksomhedsnavn),
       );
     }
 
+    /* nyeste sorterer efter oprettetTimestamp i faldende rækkefølge. ?? 0 giver fallback hvis timestamp mangler */
     if (sortBy === "nyeste") {
       result = [...result].sort(
         (a, b) => (b.oprettetTimestamp ?? 0) - (a.oprettetTimestamp ?? 0),
@@ -293,7 +354,7 @@ function PartnersContent() {
             onChange={(e) => setSearchText(e.target.value)}
             placeholder="Søg på navn eller kompetence..."
             className={styles.heroInput}
-            autoComplete="off"
+            autoComplete="off" /* deaktiverer browserens autofuldførelse da den kan forstyrre søgeoplevelsen */
           />
         </div>
       </section>
@@ -315,11 +376,16 @@ function PartnersContent() {
                   <p className={styles.sidebarTitle}>Filtre</p>
                 </div>
               </div>
+              {/* looper over alle filterkategorier og laver en FilterGroup komponent for hver */}
               {filter_categories.map((cat) => (
                 <FilterGroup
+                  /* unik nøgle til React så den kan identificere hvert element i listen */
                   key={cat.key}
+                  /* sender hele kategori objektet ned som prop - indeholder label og options */
                   category={cat}
+                  /* sender kun de aktive filtre for den specifikke kategori ned */
                   activeFilters={activeFilters[cat.key]}
+                  /* sender en callback funktion ned som FilterGroup kalder når brugeren klikker på en checkboks */
                   onToggle={(option) => toggleFilter(cat.key, option)}
                 />
               ))}
@@ -334,6 +400,9 @@ function PartnersContent() {
                     ? "Henter partnere..."
                     : `${filteredPartners.length} partner${filteredPartners.length !== 1 ? "e" : ""} fundet`}
                 </p>
+                {/* ref={sortRef} peger på hele sorterings-containeren */}
+                {/* sort_options.find((o) => o.value === sortBy)?.label finder og viser labelen for den aktive sortering */}
+                {/* flueben-ikonet vises kun tydeligt på den aktive mulighed via sortCheckActive klassen */}
                 <div className={styles.sortRow} ref={sortRef}>
                   <button
                     className={styles.sortDropdownBtn}
@@ -372,6 +441,7 @@ function PartnersContent() {
               </div>
 
               {/* Aktive filtre som chips der kan klikkes væk */}
+              {/* chips vises kun når de er aktive filtre. key={f.key}-${f.value} kombinerer kategori og værdi til en unik nøgle - det er nødvendigt fordi samme værdier kan eksisterer i forskellige kategorier */}
               {allActiveFilters.length > 0 && (
                 <div className={styles.chipsRow}>
                   {allActiveFilters.map((f) => (
@@ -417,6 +487,7 @@ function PartnersContent() {
                             className={styles.partnerLogo}
                           />
                         ) : (
+                          /* viser en fallback hvis partneren ikke har et logo */
                           <div className={styles.logoFallback}>
                             {p.virksomhedsnavn?.charAt(0)}
                           </div>
@@ -481,6 +552,9 @@ function PartnersContent() {
   );
 }
 
+/* useSearchParams kræver at komponenten er pakket i Suspense fordi den læser URL-parametre der kan ændre sig under streaming i Next.js */
+/* fallback vises mens komponenten indlæses */
+/* det er en separation der adskiller den statiske wrapper fra det dynamiske indhold */
 export default function PartnersPage() {
   return (
     <Suspense fallback={<div>Henter partnere...</div>}>

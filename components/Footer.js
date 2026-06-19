@@ -1,3 +1,5 @@
+/* statisk komponent der vises nederst på alle offentlige sider */
+
 import Link from "next/link";
 import Image from "next/image";
 import styles from "./Footer.module.css";

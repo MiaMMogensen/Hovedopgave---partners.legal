@@ -1,10 +1,15 @@
+/* layout og variabler */
+/* definerer to CSS-variabler der bruges på tværs af hele siden */
 .layout {
-  --admin-sidebar-width: 260px;
-  --admin-header-height: 90px;
-  min-height: calc(100vh - var(--admin-header-height));
+  --admin-sidebar-width: 260px; /* bruges til at give main en margin-left så indholder ikke overlapper sidebaren */
+  --admin-header-height: 90px; /* bruges til at beregne den tilgængelige højde under headeren for både sidebar og main */
+  min-height: calc(
+    100vh - var(--admin-header-height)
+  ); /* sikrer at siden fylder hele skærmhøjden minus headeren */
 }
 
 /* sidebar */
+/* sidebaren er fixed og følger med når brugeren scroller */
 .sidebar {
   background: var(--white);
   border-right: 1px solid #e2e8f0;
@@ -13,11 +18,13 @@
   gap: 90px;
   padding: 40px 20px 20px 20px;
   position: fixed;
-  top: var(--admin-header-height);
+  top: var(
+    --admin-header-height
+  ); /* den starter præcis under headeren og fylder resten af skærmhøjden */
   left: 0;
   width: var(--admin-sidebar-width);
   height: calc(100vh - var(--admin-header-height));
-  overflow: hidden;
+  overflow: hidden; /* skjuler indhold der rækker ud over sidebaren */
 }
 
 .sidebarTitle {
@@ -37,6 +44,7 @@
   margin-bottom: 32px;
 }
 
+/* de øvrige navitems i sidebaren, som ikke er aktive, har hvid baggrund og mørkeblå tekst */
 .navItem {
   display: flex;
   align-items: center;
@@ -48,6 +56,7 @@
   cursor: pointer;
 }
 
+/* det aktive navigationsitem får lilla baggrund og hvis tekst */
 .navItemActive {
   background: var(--purple);
   color: var(--white);
@@ -80,6 +89,14 @@
 
 .statCardAfsluttet {
   background: #fef2f2;
+}
+
+.statCardGodkendelse {
+  background: #fff8e6;
+}
+
+.statCardGodkendelse .statLabel {
+  color: #a65f00;
 }
 
 .statLabel {
@@ -125,6 +142,10 @@
   color: #c10007;
 }
 
+.statCardGodkendelse .statNum {
+  color: #a65f00;
+}
+
 .sidebarUser {
   display: flex;
   align-items: center;
@@ -161,8 +182,12 @@
 /* main */
 .main {
   background: linear-gradient(180deg, #d2d8fd 0%, #ffffff 100%);
-  margin-left: var(--admin-sidebar-width);
-  min-height: calc(100vh - var(--admin-header-height));
+  margin-left: var(
+    --admin-sidebar-width
+  ); /* skubber indholdet forbi sidebaren så det ikke overlapper */
+  min-height: calc(
+    100vh - var(--admin-header-height)
+  ); /* sikrer at baggrunden fylder hele siden selv hvis indholdet er kort */
   padding: 40px 60px;
 }
 
@@ -183,6 +208,7 @@
 }
 
 /* filter bar */
+/* filterbaren er en flexbox der placerer filterknapperne til venstre og søgefeltet til højre via justify-content: space-between */
 .filterBar {
   display: flex;
   align-items: center;
@@ -424,4 +450,15 @@
   padding: 48px;
   color: #6a7282;
   font-size: 15px;
+}
+
+.afventerBadge {
+  background: #fff8e6;
+  color: #f59e0b;
+  border: 1px solid #f59e0b;
+  border-radius: 100px;
+  padding: 2px 8px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
 }

@@ -1,8 +1,13 @@
-import nodemailer from "nodemailer";
+import nodemailer from "nodemailer"; /* importerer nodemailer - et Node.js bibliotek til at sende emails. Det kører på serveren og ikke i browseren */
 
+/* eksporterer en asynkron POST funktion. I Next.js App Router er filnavnet og funktionsnavnet det der bestemmer hvilken HTTP-metode der håndteres - en funktion der hedder POST svarer kun på POST-requests. request er det request-objekt der sendes fra browseren */
 export async function POST(request) {
   const { navn, virksomhed, telefon, mail, region } = await request.json();
+  /* henter og destrukturerer data fra request-bodyen. await request.json() parser JSON-data fra POST-requesten asynkront */
 
+  /* validerer at de fire påkrævede felter er udfyldt. region er ikke med fordi det er valgfrit */
+  /* hvis et felt mangler returneres en fejlrespons med HTTP-statuskode 400 - bad request */
+  /* return stopper funktionen så resten af koden ikke køres hvis data er ugyldige */
   if (!navn || !virksomhed || !telefon || !mail) {
     return Response.json(
       { error: "Manglende påkrævede felter" },
@@ -10,10 +15,14 @@ export async function POST(request) {
     );
   }
 
+  /* henter onboarding-URL'en fra environment variables. process.env.ONBOARDING_URL er en variabel sat i Vercel. || giver en fallback URL hvis variablen ikke er sat, hvilket sikrer at koden virker selv hvis environment variablen mangler */
   const onboardingUrl =
     process.env.ONBOARDING_URL ||
     "https://hovedopgave-partners-legal.vercel.app/onboarding";
 
+  /* opretter en mail-tranporter der bruger Gmail som afsender */
+  /* proces.env.MAIL_USER og process.env.MAIL_PASS er Gmail-adressen og app-passwordet sat som environment variables i Vercel */
+  /* de er ikke hardcodet i koden af sikkerhedsmæssige årsager */
   const transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
@@ -22,6 +31,10 @@ export async function POST(request) {
     },
   });
 
+  /* mail til ansøgeren */
+  /* definerer mailens afsender, modtager, emne og HTML-indhold */
+  /* from bruger template literals til at kombinere et visningsnavn med email-adressen, det er det der vises i inbakken som afsender */
+  /* to: mail sender til den email afsenderen har indtastet i formularen */
   const mailToApplicant = {
     from: `".legal Partnerprogram" <${process.env.MAIL_USER}>`,
     to: mail,
@@ -48,6 +61,8 @@ export async function POST(request) {
     `,
   };
 
+  /* intern mail til .legal */
+  /* den interne mail sendes til den samme email-adresse som afsender */
   const mailToInternal = {
     from: `".legal Partnerprogram" <${process.env.MAIL_USER}>`,
     to: process.env.MAIL_USER,
@@ -66,6 +81,8 @@ export async function POST(request) {
     `,
   };
 
+  /* try/catch fanger eventuelle fejl der opstår under afsendelsen */
+  /* de to mails sendes sekventielt - først mailen til ansøgeren og derefter den interne mail. Hvis den første mail fejler, vil den anden ikke blive sendt */
   try {
     await transporter.sendMail(mailToApplicant);
     await transporter.sendMail(mailToInternal);

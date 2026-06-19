@@ -133,6 +133,12 @@
   color: #a65f00;
 }
 
+.statusBannerAfventer {
+  background: #fefce8;
+  border-bottom: 1px solid #a65f00;
+  color: #a65f00;
+}
+
 .statusBannerIcon {
   font-size: 16px;
 }
@@ -140,7 +146,7 @@
 .statusBannerLink {
   margin-left: auto;
   font-size: 14px;
-  color: #008236;
+  color: inherit;
   text-decoration: underline;
 }
 
@@ -633,4 +639,102 @@
   padding: 0;
   display: flex;
   align-items: center;
+}
+
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.modal {
+  background: #fff;
+  border-radius: 12px;
+  padding: 50px;
+  max-width: 600px;
+  width: 90%;
+  text-align: center;
+}
+
+.modalIcon {
+  font-size: 32px;
+  margin-bottom: 16px;
+}
+
+.modalTitle {
+  font-size: 22px;
+  font-family: var(--font-spoof);
+  color: var(--darkblue);
+  margin-bottom: 15px;
+}
+
+.modalDesc {
+  font-size: 15px;
+  color: var(--darkblue);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.modalChanges {
+  background: var(--tag-background);
+  border-radius: 8px;
+  padding: 20px;
+  margin-bottom: 24px;
+  text-align: left;
+}
+
+.modalChangesLabel {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--purple);
+  margin-bottom: 12px;
+}
+
+.modalChangeRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 8px;
+  font-size: 14px;
+}
+
+.modalChangeKey {
+  color: var(--purple);
+  text-transform: capitalize;
+}
+
+.modalChangeValue {
+  color: var(--purple);
+  font-weight: 500;
+  text-align: right;
+}
+
+.modalBtns {
+  display: flex;
+  gap: 30px;
+  justify-content: center;
+}
+
+.modalBtnCancel {
+  padding: 12px 24px;
+  border-radius: 20px;
+  border: 1px solid #c10007;
+  color: #c10007;
+  background: #fef2f2;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.modalBtnConfirm {
+  padding: 12px 24px;
+  border-radius: 20px;
+  background: #f0fdf4;
+  color: #008236;
+  border: 1px solid #008236;
+  font-size: 15px;
+  cursor: pointer;
 }

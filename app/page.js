@@ -1,4 +1,4 @@
-"use client";
+"use client"; /* klientkomponent fordi den bruger usePartners hooken der lytter til Firebase i realtid */
 
 import { usePartners } from "./usePartners"; /* custom hook der henter partnerdata fra Firebase */
 
@@ -7,9 +7,13 @@ import Image from "next/image";
 import HeroSearch from "@/components/HeroSearch";
 import styles from "./page.module.css";
 
+/* et array af populære søgeord der vises som klikbare tags i hero sektionen */
+/* defineret udenfor komponenten så de kun oprettes én gang */
 const popularTags = ["GDPR", "Datasikkerhed", "Compliance", "DPO", "ISO 27001"];
 
 /* data til "Partneruniverset" sektionens tre feature kort */
+/* to arrays med indhold til henholdsvis feature-sektionen og how-to-sektionen */
+/* defineret som data udenfor komponenten frem for direkte i JSX - det gør koden mere læsbar og lettere at vedligeholde */
 const partneruniverseFeatures = [
   {
     icon: "/icons/verified.svg",
@@ -57,9 +61,11 @@ export default function HomePage() {
   /* henter alle partnere fra Firebase via usePartners hooken */
   /* partners = array af partnerobjekter, loading = boolean der er true mens data hentes */
   const { partners, loading } = usePartners();
+  /* henter alle partnere fra Firebase */
 
   /* filterer kun de partnere der har featured = true i Firebase. Det er disse der vises i "Udvalgte partnere" sektionen */
   const featuredPartners = partners.filter((p) => p.featured);
+  /* filtrerer kun de partnere har der featured: true i databasen - det er det felt der sættes manuelt i firebase for at fremhæve specifikke partnere på forsiden */
 
   return (
     <main>
@@ -84,12 +90,13 @@ export default function HomePage() {
 
           <HeroSearch />
 
+          {/* hvert populært tag er et link til partnerfortegnelsen med søgeordet som URL-parameter */}
           <div className={styles.tagsRow}>
             <span className={styles.tagsLabel}>Populært:</span>
             {popularTags.map((tag) => (
               <Link
                 key={tag}
-                href={`/partnere?q=${encodeURIComponent(tag)}`}
+                href={`/partnere?q=${encodeURIComponent(tag)}`} /* encodeURIComponent konverterer specialtegn i søgeordet til URL-sikre tegn fx mellemrum bliver %20 */
                 className={styles.tag}
               >
                 {tag}
@@ -122,6 +129,7 @@ export default function HomePage() {
             virksomheder der aktivt leder efter netop din ekspertise.
           </p>
           <div className={styles.stepsGrid}>
+            {/* procestrinene er defineret inline som et array direkte i JSX og mappes til kort */}
             {[
               {
                 num: "1",
@@ -158,6 +166,8 @@ export default function HomePage() {
           <p className={styles.sectionDesc}>
             Alt hvad du behøver for at finde den rette compliance-ekspert.
           </p>
+          {/* features og how-to trin mappes fra de to konstant-arrays til kort. Begge bruger tre-kolonne grids */}
+          {/* key={f.title} og key={s.title} bruger titlerne som unikke nøgler da de er unikke inden for hvert array */}
           <div className={styles.threeGrid}>
             {partneruniverseFeatures.map((f) => (
               <div key={f.title} className={styles.featureCard}>
@@ -196,6 +206,7 @@ export default function HomePage() {
             </Link>
           </div>
 
+          {/* loading-tilstanden viser en simpel tekst mens Firebase-data hentes */}
           {loading ? (
             <p>Henter partnere...</p>
           ) : (
